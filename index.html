@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#131A22">
+<title>AZ-900 Azure Fundamentals 問題集</title>
+<style>
+:root{
+  --ink:#131A22;
+  --panel:#1B2532;
+  --panel2:#222E3D;
+  --line:#31415420;
+  --border:#2E3B4A;
+  --text:#E8EDF2;
+  --muted:#8FA0B2;
+  --accent:#FF9900;
+  --accent-dim:#FF990033;
+  --ok:#4DD4A0;
+  --ng:#FF6B6B;
+  --d1:#7AA7FF;
+  --d2:#FF8FA3;
+  --d3:#4DD4A0;
+  --d4:#FFD166;
+  --radius:14px;
+  --nav-h:58px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI","Meiryo",sans-serif;
+  font-size:15px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  overscroll-behavior-y:none;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;}
+
+/* ---------- header ---------- */
+header{
+  position:sticky;top:0;z-index:40;
+  background:rgba(19,26,34,.92);
+  backdrop-filter:saturate(160%) blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px calc(10px + env(safe-area-inset-top)) 16px;
+  padding-top:calc(10px + env(safe-area-inset-top));
+}
+.hdr-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+.hdr-title{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--muted);}
+.hdr-title b{color:var(--accent);font-weight:800;}
+.hdr-stat{font-size:12px;color:var(--muted);}
+.hdr-stat b{color:var(--text);font-weight:700;}
+
+/* ---------- layout ---------- */
+main{max-width:760px;margin:0 auto;padding:16px 16px 32px;}
+.view{display:none;animation:fade .18s ease-out;}
+.view.on{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+h2.sec{font-size:12px;letter-spacing:.14em;color:var(--muted);font-weight:700;margin:26px 0 10px;text-transform:uppercase;}
+h2.sec:first-child{margin-top:6px;}
+
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+
+/* ---------- signature: exam weight bar ---------- */
+.weightbar{display:flex;height:13px;border-radius:7px;overflow:hidden;gap:2px;margin:2px 0 14px;}
+.wseg{position:relative;background:#2A3646;transition:none;}
+.wseg .fill{position:absolute;inset:0;width:0;border-radius:0;}
+.wlegend{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.wl{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);padding:7px 9px;background:var(--panel2);border-radius:10px;border:1px solid transparent;cursor:pointer;text-align:left;font-family:inherit;}
+.wl:active{border-color:var(--accent);}
+.wl .dot{width:9px;height:9px;border-radius:3px;flex:none;}
+.wl .nm{flex:1;color:var(--text);font-weight:600;font-size:12.5px;line-height:1.35;}
+.wl .pc{font-size:12px;color:var(--muted);}
+
+/* ---------- buttons ---------- */
+button{font-family:inherit;font-size:15px;color:inherit;background:none;border:none;cursor:pointer;}
+.btn{display:block;width:100%;padding:14px 16px;border-radius:12px;background:var(--accent);color:#1A1200;font-weight:800;letter-spacing:.02em;border:none;margin-top:8px;}
+.btn:active{filter:brightness(.9);}
+.btn.ghost{background:var(--panel2);color:var(--text);border:1px solid var(--border);font-weight:700;}
+.btn.danger{background:transparent;color:var(--ng);border:1px solid #4A2B32;font-weight:700;}
+.btn[disabled]{opacity:.4;}
+.btnrow{display:flex;gap:8px;}
+.btnrow .btn{margin-top:8px;}
+
+/* ---------- chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{padding:7px 13px;border-radius:999px;background:var(--panel2);border:1px solid var(--border);font-size:13px;color:var(--muted);font-weight:600;}
+.chip.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+
+/* ---------- question ---------- */
+.qmeta{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:11px;}
+.qtag{font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:6px;background:var(--panel2);}
+.qtopic{color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.qstar{font-size:19px;line-height:1;padding:2px 4px;filter:grayscale(1);opacity:.45;}
+.qstar.on{filter:none;opacity:1;}
+.qtext{font-size:16px;line-height:1.8;font-weight:600;margin:0 0 6px;}
+.qhint{font-size:12px;color:var(--accent);font-weight:700;margin-bottom:12px;}
+
+.choices{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.ch{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:13px 14px;border-radius:12px;background:var(--panel2);border:1.5px solid var(--border);line-height:1.65;font-size:14.5px;}
+.ch:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.ch .k{flex:none;width:22px;height:22px;border-radius:7px;background:#31415A;color:var(--muted);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.ch.sel{border-color:var(--accent);background:#2A2418;}
+.ch.sel .k{background:var(--accent);color:#1A1200;}
+.ch.ok{border-color:var(--ok);background:#16302A;}
+.ch.ok .k{background:var(--ok);color:#04140F;}
+.ch.ng{border-color:var(--ng);background:#331E22;}
+.ch.ng .k{background:var(--ng);color:#2A0A0E;}
+.ch[disabled]{cursor:default;opacity:1;}
+
+/* ---------- explanation ---------- */
+.exp{margin-top:14px;border-top:1px solid var(--border);padding-top:14px;animation:fade .2s;}
+.verdict{font-size:15px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.verdict.ok{color:var(--ok);}
+.verdict.ng{color:var(--ng);}
+.eblk{margin-bottom:12px;}
+.eh{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted);margin-bottom:5px;}
+.eb{font-size:14px;line-height:1.8;color:#CBD6E2;}
+.ewrong{display:flex;gap:8px;margin-bottom:7px;font-size:13.5px;line-height:1.7;color:#A9B8C7;}
+.ewrong .k{flex:none;font-weight:800;color:var(--ng);font-size:12px;padding-top:1px;}
+.point{background:#2A2418;border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:11px 13px;font-size:14px;line-height:1.75;color:#F0DCC0;}
+.svcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.svc{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--panel2);color:var(--muted);border:1px solid var(--border);}
+
+/* ---------- progress ---------- */
+.prog{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.prog .bar{flex:1;height:4px;border-radius:2px;background:var(--panel2);overflow:hidden;}
+.prog .bar i{display:block;height:100%;background:var(--accent);border-radius:2px;}
+.prog .n{font-size:12px;color:var(--muted);}
+
+/* ---------- exam ---------- */
+.timer{font-size:20px;font-weight:800;letter-spacing:.04em;}
+.timer.warn{color:var(--accent);}
+.timer.crit{color:var(--ng);}
+.examhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;padding:12px 14px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);}
+.flagbtn{font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);}
+.flagbtn.on{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+
+/* ---------- cloud sync ---------- */
+.syncpill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);letter-spacing:.04em;white-space:nowrap;}
+.syncpill.on{border-color:var(--ok);color:var(--ok);background:#16302A;}
+.syncpill.err{border-color:var(--ng);color:var(--ng);background:#331E22;}
+.syncpill.pending{border-color:var(--accent);color:var(--accent);background:#2A2418;}
+
+/* ---------- memo (暗記) ---------- */
+.memocard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.memocard .top{display:flex;align-items:center;gap:8px;}
+.memocard .nm{font-weight:800;font-size:14.5px;flex:1;line-height:1.4;}
+.memocard .hot{font-size:10px;color:var(--accent);letter-spacing:.08em;white-space:nowrap;}
+.memocard .fn{font-size:13px;color:#CBD6E2;line-height:1.7;margin-top:6px;}
+.memocard .ety{font-size:12px;color:var(--muted);line-height:1.7;margin-top:6px;padding-left:10px;border-left:2px solid var(--border);}
+.memocard.done{opacity:.55;}
+.memocard.done .nm{text-decoration:line-through;text-decoration-color:var(--ok);text-decoration-thickness:2px;}
+.gotit{flex:none;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);}
+.gotit.on{background:#16302A;border-color:var(--ok);color:var(--ok);}
+.relq{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--accent);}
+.relq:active{filter:brightness(.9);}
+.cattip{background:#2A2418;border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:10px 12px;font-size:13px;line-height:1.75;color:#F0DCC0;margin:8px 0 10px;}
+.cathead{display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 8px;}
+.cathead h3{font-size:14px;font-weight:800;margin:0;}
+.cathead .cnt{font-size:11px;color:var(--muted);}
+.etym{font-size:12.5px;color:var(--muted);line-height:1.75;}
+.etym b{color:#C4D0DC;}
+.fwcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:10px;}
+.fwcard h4{font-size:14px;font-weight:800;margin:0 0 6px;}
+.fwcard .fwnote{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:8px;padding-left:10px;border-left:2px solid var(--border);}
+.fwitem{font-size:13px;line-height:1.7;margin-top:4px;}
+.fwitem b{color:#C4D0DC;}
+.memoprog{display:flex;align-items:center;gap:10px;}
+.memoprog .bar{flex:1;height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;}
+.memoprog .bar i{display:block;height:100%;background:var(--ok);border-radius:3px;}
+.memoprog .n{font-size:12px;color:var(--muted);}
+.grid-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px;margin-top:10px;}
+.gn{aspect-ratio:1;border-radius:8px;background:var(--panel2);border:1px solid var(--border);font-size:12px;font-weight:700;color:var(--muted);display:flex;align-items:center;justify-content:center;}
+.gn.done{background:#2C3A4C;color:var(--text);}
+.gn.flag{border-color:var(--accent);color:var(--accent);}
+.gn.cur{outline:2px solid var(--accent);}
+
+/* ---------- result ---------- */
+.score{text-align:center;padding:26px 16px;}
+.score .pct{font-size:56px;font-weight:800;letter-spacing:-.03em;line-height:1;}
+.score .lbl{font-size:12px;letter-spacing:.16em;color:var(--muted);margin-top:10px;font-weight:700;}
+.score .judge{display:inline-block;margin-top:14px;padding:6px 18px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.08em;}
+.judge.pass{background:#16302A;color:var(--ok);border:1px solid var(--ok);}
+.judge.fail{background:#331E22;color:var(--ng);border:1px solid var(--ng);}
+
+.dbar{margin-bottom:12px;}
+.dbar .top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;}
+.dbar .top .nm{color:var(--text);font-weight:600;}
+.dbar .top .v{color:var(--muted);}
+.dbar .track{height:7px;border-radius:4px;background:var(--panel2);overflow:hidden;}
+.dbar .track i{display:block;height:100%;border-radius:4px;}
+
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.kv:last-child{border-bottom:none;}
+.kv .k{color:var(--muted);}
+.kv .v{font-weight:700;}
+
+.empty{text-align:center;padding:44px 20px;color:var(--muted);font-size:14px;line-height:1.9;}
+.empty .big{font-size:34px;margin-bottom:12px;opacity:.5;}
+
+.note{font-size:12px;color:var(--muted);line-height:1.7;margin-top:10px;}
+input[type=text],textarea{width:100%;padding:12px 14px;border-radius:10px;background:var(--panel2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:15px;}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--accent);}
+textarea{min-height:100px;font-size:12px;font-family:ui-monospace,monospace;}
+
+/* ---------- bottom nav ---------- */
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:grid;grid-template-columns:repeat(6,1fr);
+  background:rgba(24,32,42,.96);
+  backdrop-filter:blur(14px);
+  border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+nav button{height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.04em;position:relative;}
+nav button .ic{font-size:18px;line-height:1;}
+nav button.on{color:var(--accent);}
+nav button.on::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:2px;background:var(--accent);border-radius:0 0 2px 2px;}
+nav .badge{position:absolute;top:6px;right:calc(50% - 20px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--ng);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:800;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-row">
+    <div class="hdr-title">Azure <b>AZ-900</b> 問題集</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button class="syncpill" id="syncPill" style="display:none;"></button>
+      <div class="hdr-stat" id="hdrStat"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ========== HOME ========== -->
+<section class="view on" id="v-home">
+  <h2 class="sec">出題比率と到達度</h2>
+  <div class="card">
+    <div class="weightbar" id="weightbar"></div>
+    <div class="wlegend" id="wlegend"></div>
+    <p class="note">帯の幅は本試験の配点比率です。色が濃く満ちている部分が、一度でも正解できた問題の割合です。タップするとその分野の演習に進みます。</p>
+  </div>
+
+  <h2 class="sec">今日の一手</h2>
+  <div class="card">
+    <div id="homeSuggest"></div>
+    <button class="btn" id="btnQuick">10問だけ解く</button>
+    <div class="btnrow">
+      <button class="btn ghost" id="btnGoWeak">弱点を復習</button>
+      <button class="btn ghost" id="btnGoExam">模試を受ける</button>
+    </div>
+  </div>
+
+  <div id="homeSyncCard"></div>
+
+  <h2 class="sec">合格の条件</h2>
+  <div class="card">
+    <div class="kv"><span class="k">本試験の問題数</span><span class="v mono">40〜60問</span></div>
+    <div class="kv"><span class="k">制限時間</span><span class="v mono">約45分</span></div>
+    <div class="kv"><span class="k">合格スコア</span><span class="v mono">700 / 1000</span></div>
+    <div class="kv"><span class="k">目安の正答率</span><span class="v mono">70%以上</span></div>
+    <p class="note">未回答は不正解として扱われます。分からない問題も必ず選択肢を埋めること。減点はありません。</p>
+  </div>
+</section>
+
+<!-- ========== PRACTICE ========== -->
+<section class="view" id="v-practice">
+  <div id="practiceSetup">
+    <h2 class="sec">分野</h2>
+    <div class="chips" id="fltDomain"></div>
+    <h2 class="sec">難易度</h2>
+    <div class="chips" id="fltDiff"></div>
+    <h2 class="sec">キーワード検索</h2>
+    <input type="text" id="fltKw" placeholder="例: 仮想マシン、責任共有、RBAC" autocomplete="off">
+    <h2 class="sec">出題順</h2>
+    <div class="chips" id="fltOrder"></div>
+    <div class="card" style="margin-top:18px;">
+      <div class="kv"><span class="k">該当問題</span><span class="v mono" id="fltCount">-</span></div>
+      <button class="btn" id="btnStartPractice">演習を始める</button>
+    </div>
+  </div>
+  <div id="practiceRun" style="display:none;">
+    <div class="prog">
+      <span class="n mono" id="pProg">1 / 10</span>
+      <span class="bar"><i id="pBar"></i></span>
+      <button class="flagbtn" id="pQuit">終了</button>
+    </div>
+    <div id="pHost"></div>
+  </div>
+  <div id="practiceDone" style="display:none;"></div>
+</section>
+
+<!-- ========== EXAM ========== -->
+<section class="view" id="v-exam">
+  <div id="examSetup">
+    <h2 class="sec">模擬試験</h2>
+    <div class="card">
+      <p style="margin:0 0 4px;font-size:14px;line-height:1.85;">本試験と同じ配点比率(28/37/35%)で問題を抽出し、45分のカウントダウンで解きます。回答中に正誤は表示されません。</p>
+      <div class="kv" style="margin-top:12px;"><span class="k">出題数</span><span class="v mono" id="exN">-</span></div>
+      <div class="kv"><span class="k">制限時間</span><span class="v mono">45:00</span></div>
+      <button class="btn" id="btnStartExam">試験を開始する</button>
+      <p class="note">開始すると中断できません。まとまった時間が取れるときに。</p>
+    </div>
+    <div id="examHistory"></div>
+  </div>
+
+  <div id="examRun" style="display:none;">
+    <div class="examhead">
+      <div>
+        <div class="timer mono" id="exTimer">90:00</div>
+        <div style="font-size:11px;color:var(--muted);" class="mono" id="exProg">0 / 65 回答済</div>
+      </div>
+      <button class="flagbtn" id="exFlag">△ 見直し</button>
+    </div>
+    <div id="exHost"></div>
+    <div class="btnrow">
+      <button class="btn ghost" id="exPrev">前へ</button>
+      <button class="btn ghost" id="exNext">次へ</button>
+    </div>
+    <h2 class="sec">問題一覧</h2>
+    <div class="card">
+      <div class="grid-nav" id="exGrid"></div>
+      <button class="btn" id="exSubmit" style="margin-top:14px;">採点する</button>
+    </div>
+  </div>
+
+  <div id="examResult" style="display:none;"></div>
+</section>
+
+<!-- ========== REVIEW ========== -->
+<section class="view" id="v-review">
+  <h2 class="sec">復習</h2>
+  <div class="chips" id="revTabs"></div>
+  <div id="revBody" style="margin-top:14px;"></div>
+</section>
+
+<!-- ========== STATS ========== -->
+<section class="view" id="v-stats">
+  <h2 class="sec">到達度</h2>
+  <div class="card" id="statOverview"></div>
+
+  <h2 class="sec">分野別の正答率</h2>
+  <div class="card" id="statDomains"></div>
+
+  <h2 class="sec">合格予測</h2>
+  <div class="card" id="statVerdict"></div>
+
+  <div id="syncSection"></div>
+
+  <h2 class="sec">学習データ(手動バックアップ)</h2>
+  <div class="card">
+    <p class="note" style="margin-top:0;">ログインによる自動同期を使わない場合は、ここからファイルに保存して手動で引き継げます。</p>
+    <div class="btnrow">
+      <button class="btn ghost" id="btnExportFile">ファイルに保存</button>
+      <button class="btn ghost" id="btnImportFile">ファイルを読み込む</button>
+    </div>
+    <input type="file" id="fileImportInput" accept="application/json,.json" style="display:none;">
+    <p class="note">テキストで直接コピーしたい場合はこちら。</p>
+    <textarea id="ioBox" spellcheck="false" placeholder="ここにデータが表示されます"></textarea>
+    <div class="btnrow">
+      <button class="btn ghost" id="btnExport">書き出す(テキスト)</button>
+      <button class="btn ghost" id="btnImport">読み込む(テキスト)</button>
+    </div>
+    <button class="btn danger" id="btnReset" style="margin-top:14px;">学習データをすべて消す</button>
+  </div>
+</section>
+
+<!-- ========== MEMO（暗記） ========== -->
+<section class="view" id="v-memo">
+  <h2 class="sec">暗記 — サービス名は語源で覚える</h2>
+  <div class="card">
+    <div class="memoprog"><span class="n mono" id="memoStat"></span><span class="bar"><i id="memoBar"></i></span></div>
+    <p class="note" style="margin-bottom:0;">名前の由来を知ると「何をするサービスか」を思い出す取っ掛かりになります。覚えたら ✓ を押すと進捗が保存されます（クラウド同期対象）。⭐は試験頻出度。</p>
+  </div>
+  <h2 class="sec" style="margin-top:18px;">🧩 フレームワーク・一覧で覚える</h2>
+  <div id="memoFwBody"></div>
+  <h2 class="sec" style="margin-top:22px;">📇 サービス名は語源で覚える</h2>
+  <input type="text" id="memoKw" placeholder="名前・機能・由来で検索（例: 糊、ポート53、盾）" autocomplete="off" style="margin-top:4px;">
+  <div class="chips" id="memoMode" style="margin-top:10px;"></div>
+  <div class="chips" id="memoCats" style="margin-top:8px;"></div>
+  <div id="memoBody" style="margin-top:6px;"></div>
+</section>
+
+</main>
+
+<nav id="nav">
+  <button data-v="home" class="on"><span class="ic">◎</span>ホーム</button>
+  <button data-v="practice"><span class="ic">✎</span>演習</button>
+  <button data-v="exam"><span class="ic">⏱</span>模試</button>
+  <button data-v="review"><span class="ic">↺</span>復習<span class="badge" id="navBadge" style="display:none">0</span></button>
+  <button data-v="memo"><span class="ic">◇</span>暗記</button>
+  <button data-v="stats"><span class="ic">▤</span>統計</button>
+</nav>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+/* ============================================================
+   問題データ
+   スキーマ: id / domain / topic / type / difficulty /
+             question / choices / answer(正解index配列) /
+             explanation{ correct, wrong[], point, svc[] }
+   ※ QUESTIONS 配列を差し替えるだけで問題を拡張できます
+   ============================================================ */
+const QUESTIONS = [
+
+/* ===== D1: クラウドの概念 ===== */
+{id:"D1-01",domain:1,topic:"クラウドの利点",type:"single",difficulty:1,
+question:"オンプレミスではサーバー調達に数週間かかっていましたが、Azureでは数分で仮想マシンを起動できます。この特徴を最もよく表すクラウドの利点はどれですか。",
+choices:["俊敏性(アジリティ)","ディザスターリカバリー","規制準拠","データの暗号化"],
+answer:[0],
+explanation:{correct:"必要なリソースを必要なときに即座に用意できる性質を「俊敏性」と呼びます。調達リードタイムがゼロに近づくことで、実験や試行錯誤のコストが大きく下がります。",
+wrong:[null,"ディザスターリカバリーは災害時の復旧能力であり、調達の速さそのものを指す言葉ではありません。","規制準拠は各種認証・法規制への適合であり、調達速度とは別軸です。","暗号化はデータ保護の手段で、リソース調達の速さとは関係しません。"],
+point:"「数週間 → 数分」「すぐ試せる」という文脈が出たら俊敏性。可用性・スケーラビリティと混同しないこと。",
+svc:[]}},
+
+{id:"D1-02",domain:1,topic:"クラウドエコノミクス",type:"single",difficulty:1,
+question:"クラウドを採用することで、ITコストの支払いモデルは一般的にどう変化しますか。",
+choices:["運用支出(OpEx)から資本的支出(CapEx)へ","資本的支出(CapEx)から運用支出(OpEx)へ","従量課金から定額買い切りへ","変動費から固定費へ"],
+answer:[1],
+explanation:{correct:"サーバーを買い切る資本的支出(CapEx)から、使った分だけ支払う運用支出(OpEx)へ移行します。初期の大きな設備投資が不要になる点が最大の変化です。",
+wrong:["方向が逆です。クラウドはCapExを減らしOpExへ移す方向に働きます。",null,"クラウドは従量課金(消費ベース)へ移行します。買い切りへ向かうのは逆です。","固定費から変動費へ、が正しい方向です。"],
+point:"CapEx→OpEx、固定費→変動費、初期投資→従量課金。この3組の言い換えはすべて同じことを指す。",
+svc:[]}},
+
+{id:"D1-03",domain:1,topic:"スケーラビリティと弾力性",type:"single",difficulty:2,
+question:"あるECサイトはセール中だけアクセスが10倍になり、終了すると元に戻ります。負荷に応じてリソースを自動で増減させ、不要になれば減らして課金を止める性質を何と呼びますか。",
+choices:["弾力性(エラスティシティ)","高可用性","地理的冗長性","フォールトトレランス"],
+answer:[0],
+explanation:{correct:"需要に応じてリソースを自動的に増減できる性質を弾力性と呼びます。増やすだけでなく、不要になったら減らして課金を止められる点が本質です。",
+wrong:[null,"高可用性は障害時もサービスを継続できる性質で、負荷への自動追随とは別概念です。","地理的冗長性はデータを複数地域に複製することで、需要変動への対応ではありません。","フォールトトレランスは障害が起きても動作を継続する設計で、コスト最適化を伴う増減とは異なります。"],
+point:"スケーラビリティ(拡張できる)と弾力性(需要に応じ自動で増減する)は近いが別語。「必要な分だけ、必要なときだけ」なら弾力性。",
+svc:["Azure Virtual Machine Scale Sets"]}},
+
+{id:"D1-04",domain:1,topic:"クラウドサービスモデル",type:"single",difficulty:2,
+question:"OSのパッチ適用やミドルウェアの管理はクラウド事業者に任せ、開発者はアプリケーションのコードとデータにのみ集中したい場合、最も適したサービスモデルはどれですか。",
+choices:["IaaS","PaaS","SaaS","オンプレミス"],
+answer:[1],
+explanation:{correct:"PaaS(サービスとしてのプラットフォーム)では、OS・ランタイム・ミドルウェアまで事業者が管理し、利用者はアプリとデータに集中できます。Azure App Service が代表例です。",
+wrong:["IaaSでは仮想マシンのOSやミドルウェアは利用者が管理する必要があり、パッチ適用の責任が残ります。",null,"SaaSは完成したアプリを使うモデルで、独自コードのデプロイ先にはなりません(例: Microsoft 365)。","オンプレミスはすべて自社管理で、クラウド事業者に任せる要素がありません。"],
+point:"IaaS=仮想マシン(自由・責任大) / PaaS=コードとデータに集中 / SaaS=完成品を使うだけ。管理範囲は IaaS→PaaS→SaaS の順に事業者側へ移る。",
+svc:["Azure App Service"]}},
+
+{id:"D1-05",domain:1,topic:"サービスモデル",type:"single",difficulty:1,
+question:"Microsoft 365 や Dynamics 365 のように、完成したアプリケーションをブラウザ経由で利用し、インフラもアプリも事業者が管理するモデルはどれですか。",
+choices:["IaaS","PaaS","SaaS","FaaS"],
+answer:[2],
+explanation:{correct:"SaaS(サービスとしてのソフトウェア)は完成済みアプリを利用するモデルで、利用者はデータと一部設定を管理するだけです。Microsoft 365 が典型例です。",
+wrong:["IaaSは仮想マシンなどのインフラを借りるモデルです。","PaaSはアプリ開発・実行の土台を借りるモデルで、完成品の提供ではありません。",null,"FaaS(関数)はサーバーレスでコードを実行する形態で、Azure Functions が該当します。完成アプリの利用ではありません。"],
+point:"すぐ使える完成アプリ=SaaS。利用者の管理範囲が最も小さい。",
+svc:[]}},
+
+{id:"D1-06",domain:1,topic:"クラウドの展開モデル",type:"single",difficulty:2,
+question:"オンプレミスの既存システムを残しつつ、繁忙期の追加負荷だけをAzureのVMに逃がして処理したいと考えています。この構成に該当するクラウドの展開モデルはどれですか。",
+choices:["パブリッククラウド","プライベートクラウド","ハイブリッドクラウド","マルチクラウド"],
+answer:[2],
+explanation:{correct:"オンプレミスとパブリッククラウドを組み合わせて使う構成はハイブリッドクラウドです。既存資産を活かしつつ、必要な部分だけクラウドへ拡張(クラウドバースティング)できます。",
+wrong:["パブリッククラウドはAzureなどの共有基盤のみを使う構成で、オンプレミスとの併用を指しません。","プライベートクラウドは自社専用環境のみで、パブリッククラウドとの併用を指しません。",null,"マルチクラウドは複数のクラウド事業者(例: Azure と AWS)を併用する構成で、オンプレとの組み合わせとは別です。"],
+point:"オンプレ+パブリック=ハイブリッド。複数のクラウド事業者併用=マルチクラウド。この2つを混同しない。",
+svc:["Azure Arc"]}},
+
+{id:"D1-07",domain:1,topic:"責任共有モデル",type:"multi",difficulty:2,
+question:"クラウドの責任共有モデルにおいて、どのサービスモデルであっても常に「利用者側」の責任として残るものを2つ選択してください。",
+choices:["物理データセンターのセキュリティ","データそのものの管理","アカウントとアクセスの管理","物理ネットワークの保守","ハイパーバイザーの管理"],
+answer:[1,2],
+explanation:{correct:"データ、アカウントとID・アクセス管理は、IaaS/PaaS/SaaSのいずれでも常に利用者の責任として残ります。誰がアクセスできるか、情報をどう分類・保護するかは利用者が決めるべき領域だからです。",
+wrong:["物理データセンターのセキュリティは常にクラウド事業者(Microsoft)の責任です。",null,null,"物理ネットワークの保守は常に事業者の責任です。","ハイパーバイザーの管理も事業者側の責任範囲です。"],
+point:"物理(建物・ハード・ネットワーク)は常にMicrosoft。データ・アカウント/IDは常に利用者。中間層(OS・アプリ)はサービスモデルで分担が変わる。",
+svc:[]}},
+
+{id:"D1-08",domain:1,topic:"消費ベースモデル",type:"single",difficulty:1,
+question:"クラウドの「消費ベース(従量課金)モデル」の説明として最も適切なものはどれですか。",
+choices:["毎月固定額を前払いし、使用量に関わらず同額を支払う","実際に使用したリソース量に応じて課金される","利用開始時に一括で買い切る","無料で無制限に利用できる"],
+answer:[1],
+explanation:{correct:"消費ベースモデルでは、実際に使ったコンピューティング・ストレージ・通信量などに応じて課金されます。使わなければ費用は発生せず、無駄なキャパシティへの支払いを避けられます。",
+wrong:["固定額の前払いはクラウドの従量課金の考え方とは逆です。",null,"買い切りはオンプレミス的なCapExの発想で、消費ベースとは異なります。","クラウドは無料無制限ではなく、使った分だけ課金されます。"],
+point:"使った分だけ払う=消費ベース。過剰プロビジョニングの無駄と、容量不足のリスクの両方を避けられるのが利点。",
+svc:[]}},
+
+/* ===== D2: Azureのアーキテクチャとサービス ===== */
+{id:"D2-01",domain:2,topic:"リージョン",type:"single",difficulty:1,
+question:"Azureにおける「リージョン」の説明として最も適切なものはどれですか。",
+choices:["1台の物理サーバー","低遅延ネットワークで接続された1つ以上のデータセンターの地理的な集合","仮想マシンのサイズ","課金の単位"],
+answer:[1],
+explanation:{correct:"リージョンとは、低遅延ネットワークで結ばれた1つ以上のデータセンターの地理的なまとまりです。利用者はリソースを配置するリージョンを選べます(例: Japan East=東日本)。",
+wrong:["リージョンは物理サーバー1台ではなく、複数のデータセンターの集合です。",null,"仮想マシンのサイズはSKUで指定するもので、リージョンとは別概念です。","リージョンは配置場所であり、課金の単位そのものではありません。"],
+point:"リージョン=データセンターの地理的な集合。ユーザーやコンプライアンス要件に近い場所を選ぶ。",
+svc:[]}},
+
+{id:"D2-02",domain:2,topic:"可用性ゾーン",type:"single",difficulty:2,
+question:"1つのリージョン内でデータセンター単位の障害に備えて可用性を高めたい場合、リソースをどこに分散配置すべきですか。",
+choices:["複数の可用性ゾーン","複数のサブスクリプション","複数のリソースグループ","複数のタグ"],
+answer:[0],
+explanation:{correct:"可用性ゾーンは、リージョン内で電源・冷却・ネットワークが独立した物理的に分離されたデータセンター群です。複数ゾーンにまたがって配置すると、1つのデータセンター障害でもサービスを継続できます。",
+wrong:[null,"サブスクリプションは課金と管理の境界であり、物理的な障害分離の単位ではありません。","リソースグループはリソースをまとめる論理的な入れ物で、物理的な冗長性は提供しません。","タグはメタデータのラベルで、可用性とは無関係です。"],
+point:"リージョン内の物理分離=可用性ゾーン。リージョン間の広域災害対策=リージョンペア。役割の違いを押さえる。",
+svc:["Azure Virtual Machines"]}},
+
+{id:"D2-03",domain:2,topic:"リージョンペア",type:"single",difficulty:2,
+question:"リージョンペアの特徴として正しいものはどれですか。",
+choices:["同一データセンター内の2つのラック","通常300マイル以上離れた2つのリージョンの組で、広域災害やメンテナンスのリスクを分散する","課金を2倍にする仕組み","仮想マシンのバックアップ機能の名称"],
+answer:[1],
+explanation:{correct:"リージョンペアは、同じ地域内で通常300マイル(約480km)以上離れた2つのリージョンの組です。地震などの広域災害に備え、片方が被災してももう片方で継続でき、計画メンテナンスも順番に行われます。",
+wrong:["同一データセンター内ではなく、地理的に大きく離れたリージョン同士の組です。",null,"課金を2倍にする仕組みではありません。","特定のバックアップ機能の名称ではなく、リージョン配置の考え方です。"],
+point:"可用性ゾーン=リージョン内の物理分離(近い)。リージョンペア=リージョン間(遠い・広域災害対策)。距離感で区別する。",
+svc:[]}},
+
+{id:"D2-04",domain:2,topic:"管理階層",type:"single",difficulty:2,
+question:"Azureのリソース管理階層を、上位(広い)から下位(狭い)に正しく並べたものはどれですか。",
+choices:["リソースグループ → サブスクリプション → 管理グループ → リソース","管理グループ → サブスクリプション → リソースグループ → リソース","サブスクリプション → 管理グループ → リソース → リソースグループ","リソース → リソースグループ → 管理グループ → サブスクリプション"],
+answer:[1],
+explanation:{correct:"上位から順に、管理グループ(複数サブスクリプションをまとめる) → サブスクリプション(課金・境界) → リソースグループ(リソースの入れ物) → リソース(VMなど個々の実体)です。上位で設定したポリシーは下位に継承されます。",
+wrong:["リソースグループはサブスクリプションの下位です。順序が逆になっています。",null,"管理グループはサブスクリプションの上位です。","完全に逆順になっています。"],
+point:"管理グループ ⊃ サブスクリプション ⊃ リソースグループ ⊃ リソース。ポリシーやRBACは上位から下位へ継承される。",
+svc:[]}},
+
+{id:"D2-05",domain:2,topic:"リソースグループ",type:"single",difficulty:1,
+question:"リソースグループに関する説明として正しいものはどれですか。",
+choices:["1つのリソースは同時に複数のリソースグループに所属できる","リソースグループを削除すると、その中の全リソースも削除される","リソースグループには課金機能がある","リソースグループは物理的なデータセンターを指す"],
+answer:[1],
+explanation:{correct:"リソースグループはリソースをまとめる論理的な入れ物で、ライフサイクルを共有します。グループを削除すると内部の全リソースが一括削除されるため、関連リソースをまとめて管理・破棄できます。",
+wrong:["1つのリソースは1つのリソースグループにのみ所属します。",null,"課金の境界はサブスクリプションであり、リソースグループ自体は課金単位ではありません。","リソースグループは論理的な入れ物で、物理的なデータセンターではありません。"],
+point:"リソースグループ=ライフサイクルを共有する論理コンテナ。1リソース=1グループ。まとめて作成・削除できるのが利点。",
+svc:[]}},
+
+{id:"D2-06",domain:2,topic:"コンピューティング",type:"single",difficulty:2,
+question:"OSレベルの完全な制御権が必要で、既存アプリを最小限の変更でそのままクラウドへ移行(リフト&シフト)したい場合、最も適したAzureのコンピューティングサービスはどれですか。",
+choices:["Azure Functions","Azure Virtual Machines","Azure App Service","Azure Logic Apps"],
+answer:[1],
+explanation:{correct:"Azure Virtual Machines(IaaS)はOSから自分で管理できるため制御の自由度が最も高く、既存サーバーをそのまま持ち込むリフト&シフト移行に適しています。",
+wrong:["Azure Functionsはイベント駆動のサーバーレス関数で、OSの制御はできません。",null,"App ServiceはPaaSでOSを直接管理できないため、OSレベルの制御が要件だと合いません。","Logic Appsはワークフロー自動化サービスで、汎用的なサーバー移行の受け皿ではありません。"],
+point:"OSを自分で握りたい/そのまま移行=Virtual Machines(IaaS)。管理から解放されたい=App Service等のPaaS。",
+svc:["Azure Virtual Machines"]}},
+
+{id:"D2-07",domain:2,topic:"サーバーレス",type:"single",difficulty:2,
+question:"イベント(HTTPリクエストやタイマー)に応じて短いコードを実行し、サーバー管理不要で実行時間に対してのみ課金されるAzureサービスはどれですか。",
+choices:["Azure Virtual Machines","Azure Functions","Azure Kubernetes Service","Azure Batch"],
+answer:[1],
+explanation:{correct:"Azure Functionsはサーバーレスのコンピューティングで、イベントに応じてコードを実行し、実行された分だけ課金されます。インフラの管理が不要で、アイドル時のコストを抑えられます。",
+wrong:["Virtual Machinesは常時稼働の仮想サーバーで、起動している間は課金され続けます。",null,"AKSはコンテナのオーケストレーション基盤で、クラスターの管理が必要です。","Batchは大規模並列バッチ処理向けで、イベント駆動の小さな関数実行が主目的ではありません。"],
+point:"「イベントで動く・サーバー管理不要・使った分だけ」=Azure Functions(サーバーレス)。",
+svc:["Azure Functions"]}},
+
+{id:"D2-08",domain:2,topic:"コンテナ",type:"single",difficulty:2,
+question:"多数のコンテナを本番環境で自動デプロイ・スケーリング・自己修復しながらオーケストレーションしたい場合、最適なAzureサービスはどれですか。",
+choices:["Azure Container Instances","Azure Kubernetes Service (AKS)","Azure App Service","Azure Virtual Machines"],
+answer:[1],
+explanation:{correct:"Azure Kubernetes Service (AKS)はマネージドなKubernetes基盤で、多数のコンテナのデプロイ・スケーリング・自己修復を自動化できます。大規模なコンテナ運用に適しています。",
+wrong:["Azure Container Instances(ACI)は単発・少数のコンテナを手軽に起動する用途で、大規模オーケストレーションには向きません。",null,"App Serviceはコンテナも動かせますが、Kubernetesのような本格的なオーケストレーション基盤ではありません。","Virtual Machinesは仮想サーバーで、コンテナ管理を自動化する仕組みは自前で構築する必要があります。"],
+point:"少数コンテナを手軽に=Container Instances(ACI)。大規模オーケストレーション=Kubernetes Service(AKS)。",
+svc:["Azure Kubernetes Service"]}},
+
+{id:"D2-09",domain:2,topic:"ネットワーク",type:"single",difficulty:2,
+question:"オンプレミスとAzureの間を、インターネットを経由せず専用線で高帯域・低遅延・高セキュリティに接続したい場合に使うサービスはどれですか。",
+choices:["VPN Gateway","ExpressRoute","Virtual Network","Load Balancer"],
+answer:[1],
+explanation:{correct:"ExpressRouteはインターネットを経由しない専用線接続を提供し、高帯域・低遅延・安定した接続とより高いセキュリティを実現します。ミッションクリティカルな接続に適しています。",
+wrong:["VPN Gatewayはインターネット経由の暗号化トンネル(IPsec VPN)で、専用線ではありません。",null,"Virtual Network(VNet)はAzure内の仮想ネットワークそのもので、オンプレとの接続手段ではありません。","Load Balancerはトラフィックを複数サーバーへ分散する機能で、拠点間接続の手段ではありません。"],
+point:"インターネット経由の暗号化トンネル=VPN Gateway(安価)。インターネットを通らない専用線=ExpressRoute(高品質・高価)。",
+svc:["Azure ExpressRoute"]}},
+
+{id:"D2-10",domain:2,topic:"ストレージの冗長性",type:"single",difficulty:3,
+question:"ストレージの冗長性オプションのうち、プライマリリージョンとは別のリージョンにもデータを複製し、リージョン全体の障害に備えるものはどれですか。",
+choices:["ローカル冗長ストレージ (LRS)","ゾーン冗長ストレージ (ZRS)","geo冗長ストレージ (GRS)","プレミアムストレージ"],
+answer:[2],
+explanation:{correct:"geo冗長ストレージ(GRS)は、プライマリリージョン内で3コピーを保持したうえで、数百km離れたセカンダリリージョンにも複製します。リージョン全体を襲う災害に対する耐性が最も高い基本オプションです。",
+wrong:["LRSは単一データセンター内で3コピーを保持するのみで、リージョン障害には耐えられません。","ZRSはリージョン内の複数の可用性ゾーンに複製しますが、別リージョンへは複製しません。",null,"プレミアムストレージは性能(SSDベース)のオプションであり、地理的冗長性の種類ではありません。"],
+point:"LRS=1データセンター内 / ZRS=ゾーン間(リージョン内) / GRS=別リージョンへ複製。守備範囲の広さ LRS<ZRS<GRS。",
+svc:["Azure Blob Storage"]}},
+
+{id:"D2-11",domain:2,topic:"ストレージサービス",type:"single",difficulty:2,
+question:"画像・動画・バックアップなどの大量の非構造化データを、容量無制限に近い形で安価に保存するのに最も適したAzureストレージサービスはどれですか。",
+choices:["Azure Blob Storage","Azure SQL Database","Azure Files","Azure Queue Storage"],
+answer:[0],
+explanation:{correct:"Azure Blob Storageはオブジェクトストレージで、画像・動画・バックアップなどの非構造化データを大量かつ安価に保存できます。アクセス頻度に応じてホット/クール/アーカイブの層を選べます。",
+wrong:[null,"SQL Databaseはリレーショナルデータベースで、構造化データ向けです。","Azure FilesはSMB/NFSで共有できるマネージドファイル共有で、非構造化オブジェクトの大量保管が主目的ではありません。","Queue Storageはメッセージのキューイング用で、ファイル保管用ではありません。"],
+point:"非構造化データ(画像・動画・バックアップ)の大量保管=Blob Storage。ファイル共有(SMB)=Azure Files。",
+svc:["Azure Blob Storage"]}},
+
+{id:"D2-12",domain:2,topic:"データベース",type:"single",difficulty:2,
+question:"世界中に分散配置でき、複数のデータモデル(ドキュメント・キーバリュー・グラフ等)に対応し、1桁ミリ秒の応答を保証するAzureのマネージドNoSQLデータベースはどれですか。",
+choices:["Azure SQL Database","Azure Cosmos DB","Azure Cache for Redis","Azure Database for MySQL"],
+answer:[1],
+explanation:{correct:"Azure Cosmos DBはグローバル分散型のマルチモデルNoSQLデータベースで、複数リージョンへの分散配置と1桁ミリ秒の低遅延を提供します。グローバル規模のアプリに適しています。",
+wrong:["Azure SQL Databaseはリレーショナル(SQL)データベースで、NoSQLのマルチモデルではありません。",null,"Azure Cache for Redisはインメモリキャッシュで、恒久的なデータベースというより高速化のための一時キャッシュです。","Azure Database for MySQLはリレーショナルなMySQL互換DBで、マルチモデルNoSQLではありません。"],
+point:"グローバル分散・マルチモデル・1桁ミリ秒=Cosmos DB。従来型リレーショナル=Azure SQL Database。",
+svc:["Azure Cosmos DB"]}},
+
+/* ===== D3: Azureの管理とガバナンス ===== */
+{id:"D3-01",domain:3,topic:"コスト管理ツール",type:"single",difficulty:2,
+question:"オンプレミスのワークロードをAzureへ移行した場合に、どれだけコストを削減できるかを見積もるための無料ツールはどれですか。",
+choices:["価格計算ツール (Pricing Calculator)","総保有コスト (TCO) 計算ツール","Azure Advisor","Azure Cost Management"],
+answer:[1],
+explanation:{correct:"TCO(総保有コスト)計算ツールは、現在のオンプレミス環境の情報を入力すると、Azure移行後の推定コストと削減効果を比較できます。移行の投資判断に使います。",
+wrong:["価格計算ツールは、これから使うAzureサービスの構成から月額料金を見積もるツールで、オンプレとの比較が主目的ではありません。",null,"Azure Advisorは稼働中の環境に対する推奨事項を出すツールで、移行前の見積もりツールではありません。","Cost Managementは実際に発生した利用コストの分析・管理ツールで、移行前の試算ツールではありません。"],
+point:"オンプレ vs Azure の比較・削減見積り=TCO計算ツール。これから使う構成の料金試算=価格計算ツール。実績コスト分析=Cost Management。",
+svc:[]}},
+
+{id:"D3-02",domain:3,topic:"コスト管理",type:"single",difficulty:2,
+question:"実際のAzure利用料金が想定を超えそうなときに、予算を設定してしきい値超過時にアラートを受け取れる機能を含むサービスはどれですか。",
+choices:["Azure Advisor","Microsoft Cost Management","Azure Monitor","Azure Policy"],
+answer:[1],
+explanation:{correct:"Microsoft Cost Managementは、コストの分析・可視化に加え、予算(Budget)を設定してしきい値を超えそうなときにアラートを通知できます。使いすぎの早期発見に役立ちます。",
+wrong:["Azure Advisorはコスト削減の推奨も出しますが、予算アラートの設定はCost Managementの機能です。",null,"Azure Monitorはリソースの稼働状況やログの監視が主で、コスト予算アラートの中心ではありません。","Azure Policyはリソースの構成ルールを強制するガバナンス機能で、コスト予算アラートの機能ではありません。"],
+point:"予算設定+コストアラート+実績分析=Cost Management。無駄の削減提案=Advisor。",
+svc:[]}},
+
+{id:"D3-03",domain:3,topic:"タグ",type:"single",difficulty:2,
+question:"部署ごとにAzureのコストを集計・按分したいと考えています。リソースに「部署名」などのメタデータを付与してコストレポートで分類するために使う仕組みはどれですか。",
+choices:["リソースロック","タグ","リソースグループ","管理グループ"],
+answer:[1],
+explanation:{correct:"タグは名前と値のペア(例: department=sales)をリソースに付与するメタデータで、コスト管理レポートでの分類・集計や、リソースの整理に使えます。",
+wrong:["リソースロックは誤削除・誤変更を防ぐ仕組みで、コスト分類の機能ではありません。",null,"リソースグループでもある程度は分類できますが、部署横断の柔軟な分類にはタグの方が適しています。","管理グループは複数サブスクリプションをまとめる階層で、リソース単位のメタ分類の仕組みではありません。"],
+point:"コストの分類・整理のためのメタデータ=タグ(name:value)。誤操作防止=ロック。",
+svc:[]}},
+
+{id:"D3-04",domain:3,topic:"ガバナンス",type:"single",difficulty:2,
+question:"「作成するすべての仮想マシンには特定のタグを必須にする」「許可されたリージョン以外にはリソースを作らせない」といった組織ルールを自動で強制したい場合に使うサービスはどれですか。",
+choices:["Azure Policy","リソースロック","Microsoft Entra ID","Azure Advisor"],
+answer:[0],
+explanation:{correct:"Azure Policyは、リソースが組織のルールに準拠しているかを評価し、非準拠な作成をブロックしたり是正したりできます。タグ必須化や許可リージョンの制限などに使います。",
+wrong:[null,"リソースロックは個々のリソースの誤削除・誤変更を防ぐもので、作成ルールを幅広く強制する仕組みではありません。","Microsoft Entra IDはID・アクセス管理のサービスで、リソース構成ルールの強制が主目的ではありません。","Azure Advisorは推奨事項を提示するだけで、ルールを強制はしません。"],
+point:"リソース構成の組織ルールを強制=Azure Policy。誰が何をできるか(権限)=RBAC。誤操作防止=ロック。役割を切り分ける。",
+svc:["Azure Policy"]}},
+
+{id:"D3-05",domain:3,topic:"リソースロック",type:"single",difficulty:2,
+question:"本番環境の重要なリソースが誤って削除されるのを防ぎたいですが、読み取りや通常の変更は許可したい場合、設定すべきロックの種類はどれですか。",
+choices:["読み取り専用 (ReadOnly) ロック","削除 (CanNotDelete / Delete) ロック","タグロック","ポリシーロック"],
+answer:[1],
+explanation:{correct:"削除ロック(CanNotDelete)は、リソースの読み取りや変更は許可しつつ、削除だけを禁止します。誤削除の防止に適しています。",
+wrong:["読み取り専用ロックは削除だけでなく変更もすべて禁止するため、通常の変更が必要な要件には強すぎます。",null,"タグロックというロック種別は存在しません。","ポリシーロックというロック種別は存在しません。ルール強制はAzure Policyの役割です。"],
+point:"ロックは2種類。削除だけ禁止=CanNotDelete。読み取り以外すべて禁止=ReadOnly。要件に応じて選ぶ。",
+svc:[]}},
+
+{id:"D3-06",domain:3,topic:"認証と認可",type:"single",difficulty:2,
+question:"「認証(Authentication)」と「認可(Authorization)」の違いとして正しいものはどれですか。",
+choices:["認証は本人確認、認可はアクセス権限の付与","認証はアクセス権限の付与、認可は本人確認","どちらも同じ意味である","認証は暗号化、認可は復号のこと"],
+answer:[0],
+explanation:{correct:"認証(Authentication)は「あなたは誰か」を確認する本人確認、認可(Authorization)は「あなたは何をしてよいか」を決めるアクセス権限の付与です。まず認証し、次に認可する順序です。",
+wrong:[null,"認証と認可の説明が逆になっています。","両者は別概念です。混同しやすいので注意します。","暗号化・復号とは別の概念です。"],
+point:"AuthN(認証)=誰か? / AuthZ(認可)=何ができるか? 先に本人確認、次に権限判定。",
+svc:["Microsoft Entra ID"]}},
+
+{id:"D3-07",domain:3,topic:"多要素認証",type:"single",difficulty:1,
+question:"パスワード(知っているもの)に加えて、スマートフォンアプリの承認(持っているもの)を組み合わせて本人確認を強化する仕組みを何と呼びますか。",
+choices:["多要素認証 (MFA)","シングルサインオン (SSO)","ロールベースアクセス制御 (RBAC)","条件付きアクセス"],
+answer:[0],
+explanation:{correct:"多要素認証(MFA)は、知っているもの(パスワード)・持っているもの(スマホ等)・本人自身(生体情報)のうち2つ以上を組み合わせて認証を強化します。パスワード漏洩だけでは突破されにくくなります。",
+wrong:[null,"SSOは一度の認証で複数サービスにアクセスできる仕組みで、要素を増やすものではありません。","RBACはロールに基づく権限管理で、認証の強化手段ではありません。","条件付きアクセスは状況に応じてアクセス可否やMFA要求を制御する機能で、MFAそのものとは区別されます。"],
+point:"知っている/持っている/本人自身 のうち2要素以上=MFA。1回の認証で複数サービス=SSO。",
+svc:["Microsoft Entra ID"]}},
+
+{id:"D3-08",domain:3,topic:"RBAC",type:"single",difficulty:2,
+question:"利用者に対して「このリソースグループの閲覧のみ許可し、変更や削除はさせない」といったきめ細かな権限を、ロールを割り当てることで管理するAzureの仕組みはどれですか。",
+choices:["条件付きアクセス","ロールベースアクセス制御 (RBAC)","Azure Policy","多要素認証"],
+answer:[1],
+explanation:{correct:"ロールベースアクセス制御(RBAC)は、ユーザーやグループにロール(閲覧者・共同作成者・所有者など)をスコープ単位で割り当て、誰が何をできるかを細かく制御します。",
+wrong:["条件付きアクセスはサインインの状況(場所・デバイス等)に応じてアクセス可否を判断する機能で、リソース操作権限の割り当てとは異なります。",null,"Azure Policyはリソースの構成ルールを強制する機能で、ユーザーの操作権限の割り当てではありません。","多要素認証は本人確認の強化手段で、権限管理ではありません。"],
+point:"誰が何をできるか(操作権限)=RBAC。リソースの構成が正しいか=Azure Policy。この2つの役割分担は頻出。",
+svc:["Microsoft Entra ID"]}},
+
+{id:"D3-09",domain:3,topic:"サービスの正常性とSLA",type:"single",difficulty:2,
+question:"利用中のAzureサービスで進行中の障害や計画メンテナンス、稼働状況を確認したい場合に参照すべきサービスはどれですか。",
+choices:["Azure Service Health","Azure Advisor","Microsoft Cost Management","Azure Blueprints"],
+answer:[0],
+explanation:{correct:"Azure Service Healthは、自分が使っているサービスやリージョンに影響する障害・計画メンテナンス・正常性に関する情報を、個別化して通知・表示します。",
+wrong:[null,"Azure Advisorはコスト・セキュリティ・信頼性などの推奨事項を出すツールで、障害情報の中心ではありません。","Cost Managementはコスト管理のツールです。","Azure Blueprintsは環境テンプレートの展開に関する機能で、障害情報の確認用ではありません。"],
+point:"自分の環境に影響する障害・メンテ情報=Service Health。全体的な推奨事項=Advisor。",
+svc:[]}},
+
+{id:"D3-10",domain:3,topic:"管理ツール",type:"single",difficulty:2,
+question:"ブラウザだけで、CLIやPowerShellのコマンドを使ってAzureリソースを管理できる、認証済みの対話型シェル環境はどれですか。",
+choices:["Azure Cloud Shell","Azure PowerShell (ローカルインストール)","Azure Mobile App","ARMテンプレート"],
+answer:[0],
+explanation:{correct:"Azure Cloud Shellは、ブラウザ上で使える認証済みの対話型シェルで、Bash(Azure CLI)とPowerShellの両方を選べます。ローカルにツールをインストールせずにコマンド操作ができます。",
+wrong:[null,"ローカルインストール版のPowerShellは自分のPCにインストールが必要で、ブラウザ完結ではありません。","Mobile Appはスマホから状況確認・簡易操作を行うアプリで、フル機能の対話型シェルではありません。","ARMテンプレートはインフラをコードで宣言的に定義・デプロイする仕組みで、対話型シェルではありません。"],
+point:"ブラウザで完結する認証済みシェル=Cloud Shell。インフラをコードで宣言=ARMテンプレート(IaC)。",
+svc:[]}},
+
+{id:"D1-09",domain:1,topic:"スケーリング",type:"single",difficulty:2,
+question:"実行中の仮想マシンのCPUやメモリのサイズを、より大きなSKUに変更して性能を上げる方法を何と呼びますか。",
+choices:["水平スケーリング(スケールアウト)","垂直スケーリング(スケールアップ)","地理的レプリケーション","ロードバランシング"],
+answer:[1],
+explanation:{correct:"1台のリソースの性能(CPU・メモリ)自体を増強するのが垂直スケーリング(スケールアップ)です。台数はそのままに、個々を強くします。",
+wrong:["水平スケーリングはインスタンスの台数を増やす方法で、1台の性能を上げることではありません。",null,"地理的レプリケーションはデータを別リージョンに複製することで、性能増強ではありません。","ロードバランシングは負荷分散で、リソースの増強そのものではありません。"],
+point:"垂直=1台を強く(スケールアップ) / 水平=台数を増やす(スケールアウト)。クラウドは水平スケーリングが得意。",
+svc:["Azure Virtual Machines"]}},
+
+{id:"D1-10",domain:1,topic:"クラウドの利点",type:"single",difficulty:1,
+question:"複数の可用性ゾーンにアプリを配置し、1つのデータセンターに障害が起きてもサービスを止めないようにする取り組みは、クラウドのどの利点に該当しますか。",
+choices:["高可用性","俊敏性","消費ベースの課金","規制準拠"],
+answer:[0],
+explanation:{correct:"障害が起きてもサービスを継続的に利用できる性質は高可用性です。冗長化とゾーン分散によって稼働率(SLA)を高めます。",
+wrong:[null,"俊敏性はリソースを素早く用意できる性質で、障害への耐性とは別です。","消費ベースの課金は使った分だけ支払う仕組みで、可用性とは別軸です。","規制準拠は法規制への適合で、可用性の話ではありません。"],
+point:"「障害が起きても止まらない」=高可用性。SLA(稼働率保証)とセットで語られる。",
+svc:[]}},
+
+{id:"D1-11",domain:1,topic:"ディザスターリカバリー",type:"single",difficulty:2,
+question:"大規模災害でプライマリリージョンが全損した場合に備え、別リージョンへ複製したデータとシステムから復旧できるようにする考え方を最もよく表すものはどれですか。",
+choices:["ディザスターリカバリー(災害復旧)","スケールアウト","ロードバランシング","コンテナ化"],
+answer:[0],
+explanation:{correct:"災害や大規模障害の後にデータ・システムを復旧できるようにする取り組みがディザスターリカバリー(DR)です。リージョンペアや geo冗長ストレージがこれを支えます。",
+wrong:[null,"スケールアウトは台数を増やす負荷対策で、災害復旧の概念ではありません。","ロードバランシングは負荷分散で、災害復旧そのものではありません。","コンテナ化はアプリの実行形態で、災害復旧の考え方ではありません。"],
+point:"広域災害からの復旧=DR。リージョンペア・GRS が具体的な手段になる。",
+svc:[]}},
+
+{id:"D1-12",domain:1,topic:"クラウドの利点",type:"single",difficulty:2,
+question:"テンプレートや自動化で環境を一貫して展開・管理し、手作業のばらつきを減らせるクラウドの利点を最もよく表すものはどれですか。",
+choices:["管理のしやすさ(マネージ性)","データの物理的破棄","ライセンスの永久所有","電力の自給自足"],
+answer:[0],
+explanation:{correct:"コードやテンプレートによる自動化、監視・アラート、スケール自動化などで環境を一貫して扱える性質は管理のしやすさ(マネージ性/ガバナンス)です。",
+wrong:[null,"データの物理的破棄はセキュリティ運用の一場面で、クラウドの利点そのものを表しません。","ライセンスの永久所有はクラウドの従量課金の考え方と逆行します。","電力の自給自足は利用者側の関心事ではなく、クラウドの利点の説明ではありません。"],
+point:"テンプレート・自動化・監視で「一貫して楽に管理」=マネージ性。ARMテンプレートやPolicyがこれを支える。",
+svc:[]}},
+
+{id:"D1-13",domain:1,topic:"サービスモデルの識別",type:"single",difficulty:2,
+question:"「OSのバージョンやミドルウェアを自社の要件に合わせて細かく制御したいが、物理サーバーは持ちたくない」という要件に最も合うサービスモデルはどれですか。",
+choices:["IaaS","PaaS","SaaS","BPaaS"],
+answer:[0],
+explanation:{correct:"IaaS(サービスとしてのインフラ)は仮想マシンを借り、OSやミドルウェアを自分で自由に制御できます。物理ハードは事業者が管理するため、所有は不要です。",
+wrong:[null,"PaaSはOS以下を事業者が管理するため、OSレベルの細かな制御はできません。","SaaSは完成アプリを使うだけで、OSの制御はできません。","BPaaSは業務プロセスのアウトソーシング形態で、AZ-900の中心的なモデルではありません。"],
+point:"OS・ミドルウェアを自分で握りたい＋物理は持ちたくない=IaaS。この2条件が揃ったらIaaS。",
+svc:["Azure Virtual Machines"]}},
+
+{id:"D2-13",domain:2,topic:"サブスクリプション",type:"single",difficulty:2,
+question:"Azureのサブスクリプションの役割として最も適切なものはどれですか。",
+choices:["物理データセンターの名称","課金とアクセス管理の境界となる論理コンテナ","仮想マシンのOSの種類","ネットワークのIPアドレス範囲"],
+answer:[1],
+explanation:{correct:"サブスクリプションは、利用したリソースの課金がまとまり、アクセス管理やクォータ(上限)の境界にもなる論理的な単位です。部門ごと・環境ごとに分けて管理できます。",
+wrong:["サブスクリプションは物理データセンターの名称ではありません。",null,"OSの種類とは無関係です。","IPアドレス範囲を定義するのはVirtual Network(サブネット)の役割です。"],
+point:"サブスクリプション=課金とアクセス・クォータの境界。用途や部門で分割してガバナンスする。",
+svc:[]}},
+
+{id:"D2-14",domain:2,topic:"Azure Marketplace",type:"single",difficulty:1,
+question:"サードパーティ製の仮想マシンイメージやソリューションを検索して、自分のAzure環境にデプロイできるオンラインストアはどれですか。",
+choices:["Azure Marketplace","Azure Advisor","Azure Monitor","Azure Portal"],
+answer:[0],
+explanation:{correct:"Azure Marketplaceは、Microsoftおよび多数のパートナーが提供する認定済みのアプリ・VMイメージ・サービスを検索してデプロイできるオンラインストアです。",
+wrong:[null,"Azure Advisorは推奨事項を提示するツールで、製品ストアではありません。","Azure Monitorは監視サービスで、製品の購入・デプロイの場ではありません。","Azure PortalはWeb管理コンソール全体の名称で、製品ストアそのものではありません(Marketplaceはその中の機能)。"],
+point:"サードパーティ製品を探してデプロイ=Azure Marketplace。",
+svc:[]}},
+
+{id:"D2-15",domain:2,topic:"Azure Resource Manager",type:"single",difficulty:2,
+question:"Azureのすべてのリソースの作成・更新・削除の要求を受け付け、認証・認可を経て処理する統一的な管理レイヤーはどれですか。",
+choices:["Azure Resource Manager (ARM)","Azure DNS","Azure Load Balancer","Azure Cost Management"],
+answer:[0],
+explanation:{correct:"Azure Resource Manager(ARM)は、ポータル・CLI・PowerShell・REST APIなどすべての操作が経由する統一的な管理・デプロイレイヤーです。RBACやタグ、テンプレート展開もARM上で機能します。",
+wrong:[null,"Azure DNSは名前解決のサービスで、リソース管理レイヤーではありません。","Load Balancerは負荷分散で、管理レイヤーではありません。","Cost Managementはコスト管理ツールで、リソース操作の処理レイヤーではありません。"],
+point:"どの操作方法でも必ず通る「司令塔」=ARM。RBAC・タグ・テンプレートはARMの上で効く。",
+svc:[]}},
+
+{id:"D2-16",domain:2,topic:"ストレージアクセス層",type:"single",difficulty:2,
+question:"数年間ほとんどアクセスしないが、法令上の保管義務で長期保存が必要なログデータを、最も低コストで保管できるBlob Storageのアクセス層はどれですか。",
+choices:["ホット層","クール層","アーカイブ層","プレミアム層"],
+answer:[2],
+explanation:{correct:"アーカイブ層は保管コストが最も安い層で、めったにアクセスしない長期保存データに適しています。取り出しには時間(リハイドレート)とコストがかかる点が特徴です。",
+wrong:["ホット層は頻繁にアクセスするデータ向けで、保管コストが高めです。","クール層はアクセス頻度が低い(30日以上)データ向けですが、アーカイブほど安くはありません。",null,"プレミアム層は高性能(低遅延)向けで、長期保管の低コスト用途ではありません。"],
+point:"アクセス頻度で選ぶ: 高頻度=ホット / 低頻度=クール / めったに見ない長期保管=アーカイブ(最安・取り出し遅い)。",
+svc:["Azure Blob Storage"]}},
+
+{id:"D2-17",domain:2,topic:"Azure Virtual Desktop",type:"single",difficulty:2,
+question:"従業員がどこからでもブラウザや専用クライアントで、クラウド上のWindowsデスクトップ環境にアクセスできるようにするAzureサービスはどれですか。",
+choices:["Azure Virtual Desktop","Azure Kubernetes Service","Azure Functions","Azure Blob Storage"],
+answer:[0],
+explanation:{correct:"Azure Virtual Desktop(AVD)は、クラウド上で仮想デスクトップ・アプリを提供するサービス(DaaS/VDI)です。リモートワークやセキュアな端末利用に使われます。",
+wrong:[null,"AKSはコンテナのオーケストレーション基盤で、仮想デスクトップではありません。","Functionsはサーバーレス関数で、デスクトップ提供ではありません。","Blob Storageはオブジェクトストレージで、デスクトップ環境ではありません。"],
+point:"クラウド上の仮想デスクトップ(VDI/DaaS)=Azure Virtual Desktop。",
+svc:[]}},
+
+{id:"D2-18",domain:2,topic:"負荷分散",type:"single",difficulty:3,
+question:"URLパス(例: /images は画像サーバー、/api はAPIサーバー)に基づいてWebトラフィックを振り分ける、レイヤー7の負荷分散サービスはどれですか。",
+choices:["Azure Load Balancer","Azure Application Gateway","Azure ExpressRoute","Azure DNS"],
+answer:[1],
+explanation:{correct:"Application GatewayはHTTP/HTTPS(レイヤー7)の負荷分散で、URLパスやホスト名に基づくルーティング(パスベースルーティング)やWAF機能を提供します。",
+wrong:["Azure Load Balancerはレイヤー4(TCP/UDP)の負荷分散で、URLパスの内容までは見ません。",null,"ExpressRouteはオンプレとの専用線接続で、負荷分散サービスではありません。","Azure DNSは名前解決サービスで、トラフィックの内容ベースの振り分けは行いません。"],
+point:"L4(IP/ポート)で分散=Load Balancer / L7(URL・ホスト名)で分散＋WAF=Application Gateway。",
+svc:[]}},
+
+{id:"D3-11",domain:3,topic:"SLA",type:"single",difficulty:3,
+question:"サービスレベルアグリーメント(SLA)に関する説明として正しいものはどれですか。",
+choices:["無料(Free)レベルのサービスにも必ず有償と同じSLAが付く","複数のサービスを直列に組み合わせると、全体の複合SLAは各サービスのSLAより低くなる","SLAは応答時間の速さだけを保証する","SLAを下回っても利用者は何も請求できない"],
+answer:[1],
+explanation:{correct:"複数サービスを直列に依存させると、全体の可用性は各SLAの掛け算になるため、単体より低くなります。可用性を上げるには冗長構成などの工夫が必要です。",
+wrong:["無料レベルのサービスには通常SLAは提供されません。",null,"SLAは主に稼働率(アップタイム)を保証するもので、応答速度だけの保証ではありません。","SLAを下回った場合、条件に応じてサービスクレジット(返金・割引)を請求できることがあります。"],
+point:"直列の複合SLAは掛け算で下がる。無料枠にSLAなし。未達時はサービスクレジット。",
+svc:[]}},
+
+{id:"D3-12",domain:3,topic:"サービスライフサイクル",type:"single",difficulty:2,
+question:"Azureの新機能が「プレビュー(Preview)」として提供されている段階の特徴として正しいものはどれですか。",
+choices:["一般提供(GA)と同じ完全なSLAが保証される","本番利用向けに完成しており変更されない","評価目的で早期に試せるが、SLA対象外で仕様変更の可能性がある","有料でのみ利用できる"],
+answer:[2],
+explanation:{correct:"プレビューは正式提供(GA)前の段階で、早期に試せる代わりにSLAの対象外で、仕様変更や提供終了の可能性があります。本番の重要ワークロードには推奨されません。",
+wrong:["プレビューはSLA対象外です。","プレビュー段階は変更される可能性があり、完成・確定ではありません。",null,"プレビューは有料に限りません。無償で試せるものも多くあります。"],
+point:"Preview=お試し段階(SLAなし・変更あり) → GA(一般提供・SLAあり・本番OK)。本番はGAを使う。",
+svc:[]}},
+
+{id:"D3-13",domain:3,topic:"Azure Advisor",type:"single",difficulty:2,
+question:"稼働中のAzure環境を分析し、コスト・セキュリティ・信頼性・パフォーマンス・優れた運用の観点で個別化された改善推奨を提示する無料サービスはどれですか。",
+choices:["Azure Advisor","Azure Service Health","Microsoft Cost Management","Azure Policy"],
+answer:[0],
+explanation:{correct:"Azure Advisorは、実際の構成を分析してベストプラクティスに沿った推奨事項を、コスト・セキュリティ・信頼性・パフォーマンス・オペレーショナルエクセレンスの観点でまとめて提示します。",
+wrong:[null,"Service Healthは障害・メンテナンス情報の通知で、改善推奨のツールではありません。","Cost Managementはコストの分析・予算管理が主で、多観点の推奨提示はAdvisorの役割です。","Azure Policyは構成ルールの強制で、推奨事項の提示ツールではありません。"],
+point:"多観点(コスト/セキュリティ/信頼性/性能/運用)の改善推奨=Advisor。障害情報=Service Health。役割を混同しない。",
+svc:[]}},
+
+{id:"D3-14",domain:3,topic:"Azure Monitor",type:"single",difficulty:2,
+question:"仮想マシンやアプリのメトリックとログを収集・可視化し、しきい値超過時にアラートを発報できる、Azureの統合監視サービスはどれですか。",
+choices:["Azure Monitor","Azure Advisor","Microsoft Entra ID","Azure Blueprints"],
+answer:[0],
+explanation:{correct:"Azure Monitorは、Azureおよびオンプレのリソースからメトリック・ログを収集し、可視化・分析(Log Analytics)・アラート・自動対応を提供する統合監視基盤です。",
+wrong:[null,"Advisorは改善推奨の提示で、リアルタイム監視やアラートの中心ではありません。","Microsoft Entra IDはID・アクセス管理で、監視サービスではありません。","Blueprintsは環境テンプレートの展開機能で、監視ではありません。"],
+point:"メトリック+ログの収集・可視化・アラート=Azure Monitor(内部でLog Analyticsを使う)。",
+svc:[]}},
+
+{id:"D3-15",domain:3,topic:"Defender for Cloud",type:"single",difficulty:2,
+question:"クラウド環境のセキュリティ体制を「セキュアスコア」で数値化し、脆弱な構成や脅威を検出して改善策を提示するAzureサービスはどれですか。",
+choices:["Microsoft Defender for Cloud","Azure Monitor","Microsoft Cost Management","Azure Load Balancer"],
+answer:[0],
+explanation:{correct:"Microsoft Defender for Cloudは、リソースのセキュリティ構成を評価してセキュアスコアで可視化し、脅威検出と推奨事項を提供するクラウドセキュリティ態勢管理(CSPM/CWP)のサービスです。",
+wrong:[null,"Azure Monitorは稼働監視が主で、セキュリティ態勢のスコアリングが中心ではありません。","Cost Managementはコスト管理のツールです。","Load Balancerは負荷分散で、セキュリティ評価とは無関係です。"],
+point:"セキュアスコアで態勢を可視化＋脅威検出=Defender for Cloud。",
+svc:["Microsoft Defender for Cloud"]}},
+
+{id:"D3-16",domain:3,topic:"ゼロトラスト",type:"single",difficulty:2,
+question:"「社内ネットワークの内側だからといって信頼せず、すべてのアクセスを常に検証する」というセキュリティモデルを何と呼びますか。",
+choices:["境界防御モデル","ゼロトラストモデル","オープンアクセスモデル","フラットネットワークモデル"],
+answer:[1],
+explanation:{correct:"ゼロトラストは「決して信頼せず、常に検証する(Never trust, always verify)」を原則とし、場所や所属に関わらずすべてのアクセス要求を明示的に検証・最小権限で許可する考え方です。",
+wrong:["境界防御は「内側は安全」と仮定する従来型で、ゼロトラストとは逆の発想です。",null,"オープンアクセスは制限しない考え方で、ゼロトラストと正反対です。","フラットネットワークは分離のないネットワークで、セキュリティモデルの名称ではありません。"],
+point:"「内側でも信頼しない・常に検証・最小権限」=ゼロトラスト。従来の境界防御(内側は安全)と対比で覚える。",
+svc:[]}},
+
+{id:"D3-17",domain:3,topic:"条件付きアクセス",type:"single",difficulty:2,
+question:"「社外のIPからサインインする場合のみ多要素認証を必須にする」といった、状況に応じたアクセス制御をMicrosoft Entra IDで実現する機能はどれですか。",
+choices:["条件付きアクセス","リソースロック","タグ","ExpressRoute"],
+answer:[0],
+explanation:{correct:"条件付きアクセスは、ユーザー・場所・デバイス・リスクなどのシグナルに基づき、アクセスの許可・ブロックやMFA要求などのポリシーを適用するEntra IDの機能です。",
+wrong:[null,"リソースロックはリソースの誤削除・誤変更防止で、サインイン制御ではありません。","タグはメタデータのラベルで、アクセス制御機能ではありません。","ExpressRouteはオンプレとの専用線接続で、認証制御ではありません。"],
+point:"状況(場所・デバイス・リスク)に応じてアクセス可否やMFAを制御=条件付きアクセス(Entra IDの機能)。",
+svc:["Microsoft Entra ID"]}}
+];
+
+/* ============================================================
+   状態管理
+   ============================================================ */
+const KEY = "az900_state_v1";
+const DOMAINS = {
+  1:{name:"クラウドの概念",short:"クラウド概念",w:28,c:"var(--d1)"},
+  2:{name:"Azureのアーキテクチャとサービス",short:"アーキテクチャ",w:37,c:"var(--d2)"},
+  3:{name:"Azureの管理とガバナンス",short:"管理・ガバナンス",w:35,c:"var(--d3)"}
+};
+const DIFFS = {1:"基本",2:"標準",3:"応用"};
+
+const defaults = () => ({ rec:{}, marks:[], exams:[], memo:{} });
+// rec[qid] = {seen:n, ok:n, streak:n, last:bool}
+
+let S = load();
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return defaults();
+    return Object.assign(defaults(), JSON.parse(raw));
+  }catch(e){ return defaults(); }
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+  scheduleCloudSave();
+}
+
+const byId = id => QUESTIONS.find(q=>q.id===id);
+const inDomain = d => QUESTIONS.filter(q=>q.domain===d);
+const isWeak = qid => { const r=S.rec[qid]; return r && r.seen>0 && (r.streak||0) < 2 && r.ok < r.seen; };
+const weakIds = () => QUESTIONS.filter(q=>isWeak(q.id)).map(q=>q.id);
+const masteredIn = d => inDomain(d).filter(q=>(S.rec[q.id]?.ok||0)>0).length;
+
+function record(qid, ok){
+  const r = S.rec[qid] || {seen:0, ok:0, streak:0, last:null};
+  r.seen++; if(ok){ r.ok++; r.streak=(r.streak||0)+1; } else { r.streak=0; }
+  r.last = ok;
+  S.rec[qid]=r; save();
+}
+
+/* ============================================================
+   共通ユーティリティ
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const el = (t,c,h) => { const e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e; };
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const KEYS = ["A","B","C","D","E"];
+const esc = s => s.replace(/[&<>]/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+
+/* ============================================================
+   問題カードのレンダリング(演習/復習/模試の共通部品)
+   mode: "instant"(即時採点) | "defer"(模試) | "readonly"(見直し)
+   ============================================================ */
+function renderQuestion(q, opts){
+  opts = opts || {};
+  const mode = opts.mode || "instant";
+  const card = el("div","card");
+
+  // メタ行
+  const meta = el("div","qmeta");
+  const tag = el("span","qtag", "D"+q.domain);
+  tag.style.color = DOMAINS[q.domain].c;
+  const topic = el("span","qtopic", esc(q.topic) + " ・ " + DIFFS[q.difficulty]);
+  const star = el("button","qstar"+(S.marks.includes(q.id)?" on":""),"★");
+  star.setAttribute("aria-label","この問題をブックマーク");
+  star.onclick = ()=>{
+    const i=S.marks.indexOf(q.id);
+    if(i<0) S.marks.push(q.id); else S.marks.splice(i,1);
+    star.classList.toggle("on"); save(); updateBadge();
+  };
+  meta.append(tag, topic, star);
+  card.append(meta);
+
+  card.append(el("p","qtext", esc(q.question)));
+  if(q.type==="multi") card.append(el("div","qhint","2つ選択してください"));
+
+  // 選択肢(表示順をシャッフルし、元indexへのマップを保持)
+  const order = opts.order || shuffle(q.choices.map((_,i)=>i));
+  const box = el("div","choices");
+  let picked = (opts.picked||[]).slice();  // 元index
+  let answered = (mode==="readonly");
+
+  const btns = [];
+  order.forEach((orig, disp)=>{
+    const b = el("button","ch");
+    b.innerHTML = '<span class="k">'+KEYS[disp]+'</span><span>'+esc(q.choices[orig])+'</span>';
+    b.dataset.orig = orig;
+    b.onclick = ()=>{
+      if(answered) return;
+      if(q.type==="single"){
+        picked=[orig];
+      }else{
+        const i=picked.indexOf(orig);
+        if(i>=0) picked.splice(i,1);
+        else if(picked.length<2) picked.push(orig);
+      }
+      btns.forEach(x=>x.classList.toggle("sel", picked.includes(+x.dataset.orig)));
+      if(mode==="defer"){ opts.onPick && opts.onPick(picked); }
+      else { submit.disabled = (q.type==="multi" ? picked.length!==2 : picked.length!==1); }
+      if(mode==="instant" && q.type==="single"){ doSubmit(); }
+    };
+    btns.push(b); box.append(b);
+  });
+  card.append(box);
+
+  btns.forEach(x=>x.classList.toggle("sel", picked.includes(+x.dataset.orig)));
+
+  let submit = null;
+  if(mode==="instant"){
+    submit = el("button","btn","答え合わせ");
+    submit.disabled = true;
+    submit.onclick = doSubmit;
+    if(q.type==="multi") card.append(submit);
+  }
+
+  if(mode==="readonly"){
+    paint();
+    card.append(buildExplain(q, picked));
+  }
+
+  function doSubmit(){
+    if(answered) return;
+    answered = true;
+    if(submit) submit.remove();
+    const ok = isCorrect(q, picked);
+    paint();
+    record(q.id, ok);
+    updateBadge(); updateHeader();
+    card.append(buildExplain(q, picked));
+    if(opts.onDone) opts.onDone(ok);
+  }
+
+  function paint(){
+    btns.forEach(b=>{
+      const o = +b.dataset.orig;
+      b.disabled = true;
+      b.classList.remove("sel");
+      if(q.answer.includes(o)) b.classList.add("ok");
+      else if(picked.includes(o)) b.classList.add("ng");
+    });
+  }
+
+  return card;
+}
+
+function isCorrect(q, picked){
+  if(picked.length !== q.answer.length) return false;
+  return q.answer.every(a=>picked.includes(a));
+}
+
+function buildExplain(q, picked){
+  const ok = isCorrect(q, picked);
+  const w = el("div","exp");
+  w.append(el("div","verdict "+(ok?"ok":"ng"), (ok?"◎  正解":"×  不正解")));
+
+  const c = el("div","eblk");
+  c.append(el("div","eh","正解の理由"));
+  c.append(el("div","eb", esc(q.explanation.correct)));
+  w.append(c);
+
+  const wrongs = q.explanation.wrong.map((t,i)=>({t,i})).filter(x=>x.t);
+  if(wrongs.length){
+    const b = el("div","eblk");
+    b.append(el("div","eh","ほかの選択肢が違う理由"));
+    wrongs.forEach(x=>{
+      const r = el("div","ewrong");
+      r.append(el("span","k","×"));
+      r.append(el("span","", "<b style='color:#C4D0DC'>"+esc(q.choices[x.i])+"</b> — "+esc(x.t)));
+      b.append(r);
+    });
+    w.append(b);
+  }
+
+  const p = el("div","eblk");
+  p.append(el("div","eh","試験のポイント"));
+  p.append(el("div","point", esc(q.explanation.point)));
+  w.append(p);
+
+  // 関連サービスの「名前の由来」を自動表示（暗記タブのデータと連動）
+  if(q.explanation.svc && q.explanation.svc.length && typeof findEtym === "function"){
+    const seen = new Set();
+    const etys = [];
+    q.explanation.svc.forEach(tag=>{
+      const it = findEtym(tag);
+      if(it && !seen.has(it.n)){ seen.add(it.n); etys.push(it); }
+    });
+    if(etys.length){
+      const blk = el("div","eblk");
+      blk.append(el("div","eh","🏷 名前の由来で覚える"));
+      const box = el("div","etym");
+      etys.slice(0,3).forEach(it=>{
+        box.append(el("div","", "<b>"+esc(it.n)+"</b> — "+esc(it.e)));
+      });
+      blk.append(box);
+      w.append(blk);
+    }
+  }
+
+  if(q.explanation.svc && q.explanation.svc.length){
+    const s = el("div","svcs");
+    q.explanation.svc.forEach(n=>s.append(el("span","svc", esc(n))));
+    w.append(s);
+  }
+  return w;
+}
+
+/* ============================================================
+   ナビゲーション
+   ============================================================ */
+function go(v){
+  document.querySelectorAll(".view").forEach(x=>x.classList.toggle("on", x.id==="v-"+v));
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on", b.dataset.v===v));
+  window.scrollTo(0,0);
+  if(v==="home") drawHome();
+  if(v==="stats") drawStats();
+  if(v==="review") drawReview();
+  if(v==="memo") drawMemo();
+  if(v==="exam" && !examState) drawExamSetup();
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  if(examState && b.dataset.v!=="exam"){
+    if(!confirm("模擬試験を中断します。回答は破棄されますがよろしいですか。")) return;
+    stopExam();
+  }
+  go(b.dataset.v);
+});
+
+function updateBadge(){
+  const n = weakIds().length;
+  const b = $("#navBadge");
+  b.style.display = n>0 ? "flex" : "none";
+  b.textContent = n>99?"99+":n;
+}
+function updateHeader(){
+  const seen = Object.keys(S.rec).length;
+  const ok = QUESTIONS.filter(q=>(S.rec[q.id]?.ok||0)>0).length;
+  $("#hdrStat").innerHTML = "到達 <b>"+ok+"</b> / "+QUESTIONS.length;
+}
+
+/* ============================================================
+   ホーム
+   ============================================================ */
+function drawHome(){
+  const wb = $("#weightbar"); wb.innerHTML="";
+  const wl = $("#wlegend"); wl.innerHTML="";
+  [1,2,3,4].forEach(d=>{
+    const D = DOMAINS[d];
+    const total = inDomain(d).length, done = masteredIn(d);
+    const pct = total? Math.round(done/total*100):0;
+
+    const seg = el("div","wseg");
+    seg.style.flex = D.w;
+    const f = el("i","fill"); f.style.background = D.c; f.style.width = pct+"%";
+    seg.append(f); wb.append(seg);
+
+    const b = el("button","wl");
+    b.innerHTML = '<span class="dot" style="background:'+D.c+'"></span>'
+      + '<span class="nm">'+D.short+'</span>'
+      + '<span class="pc mono">'+done+'/'+total+' · '+D.w+'%</span>';
+    b.onclick = ()=>{ startPractice(inDomain(d).map(q=>q.id), true); go("practice"); };
+    wl.append(b);
+  });
+
+  // 今日の一手
+  const w = weakIds().length;
+  const untouched = QUESTIONS.filter(q=>!S.rec[q.id]).length;
+  let msg;
+  if(untouched === QUESTIONS.length){
+    msg = "まだ1問も解いていません。まずは10問だけ。移動中の1駅分で終わります。";
+  }else if(w >= 5){
+    msg = "取りこぼしが <b>"+w+"問</b> あります。新しい問題より、まず間違えた問題を潰すほうが得点に直結します。";
+  }else if(untouched > 0){
+    msg = "未着手が <b>"+untouched+"問</b> 残っています。全問に一度は目を通しておきましょう。";
+  }else{
+    msg = "全問に一度は正解しています。模試で本番形式の時間感覚を掴んでおきましょう。";
+  }
+  $("#homeSuggest").innerHTML = '<div class="eb" style="margin-bottom:6px;">'+msg+'</div>';
+  updateHeader(); updateBadge();
+}
+
+$("#btnQuick").onclick = ()=>{
+  const pool = QUESTIONS.filter(q=>!S.rec[q.id]);
+  const src = (pool.length? pool : QUESTIONS).map(q=>q.id);
+  startPractice(shuffle(src).slice(0,10), true);
+  go("practice");
+};
+$("#btnGoWeak").onclick = ()=>{ go("review"); revTab="weak"; drawReview(); };
+$("#btnGoExam").onclick = ()=>go("exam");
+
+/* ============================================================
+   演習モード
+   ============================================================ */
+let flt = {domain:0, diff:0, kw:"", order:"random"};
+let pq = null; // {ids, i, ok}
+
+function drawFilters(){
+  const fd = $("#fltDomain"); fd.innerHTML="";
+  [[0,"すべて"],[1,"D1 クラウド概念"],[2,"D2 セキュリティ"],[3,"D3 テクノロジー"],[4,"D4 請求・サポート"]].forEach(([v,l])=>{
+    const b = el("button","chip"+(flt.domain===v?" on":""), l);
+    b.onclick=()=>{flt.domain=v; drawFilters();};
+    fd.append(b);
+  });
+  const fdi = $("#fltDiff"); fdi.innerHTML="";
+  [[0,"すべて"],[1,"基本"],[2,"標準"],[3,"応用"]].forEach(([v,l])=>{
+    const b = el("button","chip"+(flt.diff===v?" on":""), l);
+    b.onclick=()=>{flt.diff=v; drawFilters();};
+    fdi.append(b);
+  });
+  const fo = $("#fltOrder"); fo.innerHTML="";
+  [["random","ランダム"],["seq","ID順"],["unseen","未着手を優先"]].forEach(([v,l])=>{
+    const b = el("button","chip"+(flt.order===v?" on":""), l);
+    b.onclick=()=>{flt.order=v; drawFilters();};
+    fo.append(b);
+  });
+  $("#fltCount").textContent = filtered().length + " 問";
+}
+function filtered(){
+  const kw = flt.kw.trim().toLowerCase();
+  let a = QUESTIONS.filter(q=>{
+    if(flt.domain && q.domain!==flt.domain) return false;
+    if(flt.diff && q.difficulty!==flt.diff) return false;
+    if(kw){
+      const hay = (q.question + q.choices.join(" ") + q.topic + (q.explanation.svc||[]).join(" ")).toLowerCase();
+      if(!hay.includes(kw)) return false;
+    }
+    return true;
+  });
+  if(flt.order==="random") a = shuffle(a);
+  else if(flt.order==="unseen") a = a.slice().sort((x,y)=>(S.rec[x.id]?1:0)-(S.rec[y.id]?1:0));
+  return a;
+}
+$("#fltKw").oninput = e=>{ flt.kw=e.target.value; $("#fltCount").textContent = filtered().length + " 問"; };
+$("#btnStartPractice").onclick = ()=>{
+  const ids = filtered().map(q=>q.id);
+  if(!ids.length){ alert("条件に合う問題がありません。"); return; }
+  startPractice(ids, false);
+};
+
+function startPractice(ids, jump, from){
+  pq = {ids:ids, i:0, ok:0, from: from || null};
+  $("#practiceSetup").style.display="none";
+  $("#practiceDone").style.display="none";
+  $("#practiceRun").style.display="block";
+  drawPQ();
+}
+function drawPQ(){
+  const host = $("#pHost"); host.innerHTML="";
+  const q = byId(pq.ids[pq.i]);
+  $("#pProg").textContent = (pq.i+1)+" / "+pq.ids.length;
+  $("#pBar").style.width = ((pq.i)/pq.ids.length*100)+"%";
+  host.append(renderQuestion(q,{mode:"instant", onDone:(ok)=>{
+    if(ok) pq.ok++;
+    const nx = el("button","btn", pq.i+1 < pq.ids.length ? "次の問題へ" : "結果を見る");
+    nx.onclick = ()=>{
+      pq.i++;
+      if(pq.i < pq.ids.length){ drawPQ(); window.scrollTo(0,0); }
+      else finishPractice();
+    };
+    host.append(nx);
+    nx.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }}));
+}
+$("#pQuit").onclick = ()=>{ if(confirm("演習を終了します。")) finishPractice(); };
+
+function finishPractice(){
+  const done = pq.i + (pq.i<pq.ids.length?0:0);
+  const answered = Math.min(pq.i+ (0), pq.ids.length);
+  const total = pq.ids.length;
+  const solved = Math.max(pq.i, 0);
+  const pct = solved? Math.round(pq.ok/solved*100):0;
+  $("#practiceRun").style.display="none";
+  const d = $("#practiceDone"); d.style.display="block";
+  d.innerHTML = "";
+  const c = el("div","card score");
+  c.innerHTML = '<div class="pct mono" style="color:'+(pct>=70?"var(--ok)":"var(--accent)")+'">'+pct+'<span style="font-size:24px">%</span></div>'
+    + '<div class="lbl">'+pq.ok+' / '+solved+' 問 正解</div>';
+  d.append(c);
+  const again = el("button","btn","別の条件で演習する");
+  again.onclick = ()=>{ $("#practiceDone").style.display="none"; $("#practiceSetup").style.display="block"; drawFilters(); };
+  const rev = el("button","btn ghost","間違えた問題を復習する");
+  rev.onclick = ()=>{ revTab="weak"; go("review"); };
+  d.append(again, rev);
+  if(pq.from === "memo"){
+    const back = el("button","btn ghost","暗記に戻る");
+    back.onclick = ()=>{ go("memo"); };
+    d.append(back);
+  }
+  pq=null;
+  drawHome();
+}
+
+/* ============================================================
+   模擬試験
+   ============================================================ */
+let examState = null; // {ids, picks{}, flags[], i, endAt, timer}
+const EXAM_TARGET = 48;
+
+function buildExamSet(){
+  const n = Math.min(EXAM_TARGET, QUESTIONS.length);
+  const out = [];
+  [1,2,3,4].forEach(d=>{
+    const want = Math.round(n * DOMAINS[d].w / 100);
+    out.push(...shuffle(inDomain(d).map(q=>q.id)).slice(0, want));
+  });
+  // 端数調整
+  const rest = shuffle(QUESTIONS.map(q=>q.id).filter(id=>!out.includes(id)));
+  while(out.length < n && rest.length) out.push(rest.pop());
+  return shuffle(out).slice(0,n);
+}
+
+function drawExamSetup(){
+  $("#exN").textContent = Math.min(EXAM_TARGET, QUESTIONS.length)+"問";
+  const h = $("#examHistory"); h.innerHTML="";
+  if(S.exams.length){
+    h.append(el("h2","sec","これまでの結果"));
+    const c = el("div","card");
+    S.exams.slice(-5).reverse().forEach(e=>{
+      const r = el("div","kv");
+      r.innerHTML = '<span class="k mono">'+e.date+'</span><span class="v mono" style="color:'+(e.pct>=70?"var(--ok)":"var(--ng)")+'">'+e.pct+'% ('+e.ok+'/'+e.n+')</span>';
+      c.append(r);
+    });
+    h.append(c);
+  }
+}
+
+$("#btnStartExam").onclick = ()=>{
+  const ids = buildExamSet();
+  examState = {ids, picks:{}, flags:[], i:0, endAt: Date.now()+45*60*1000, timer:null};
+  $("#examSetup").style.display="none";
+  $("#examResult").style.display="none";
+  $("#examRun").style.display="block";
+  examState.timer = setInterval(tick, 500);
+  tick(); drawExam();
+};
+function tick(){
+  if(!examState) return;
+  const ms = examState.endAt - Date.now();
+  if(ms <= 0){ submitExam(true); return; }
+  const s = Math.floor(ms/1000);
+  const t = $("#exTimer");
+  t.textContent = String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+  t.className = "timer mono" + (s<=300?" crit": s<=600?" warn":"");
+}
+function stopExam(){
+  if(examState && examState.timer) clearInterval(examState.timer);
+  examState = null;
+  $("#examRun").style.display="none";
+  $("#examSetup").style.display="block";
+  $("#examResult").style.display="none";
+  drawExamSetup();
+}
+function drawExam(){
+  const E = examState;
+  const q = byId(E.ids[E.i]);
+  const host = $("#exHost"); host.innerHTML="";
+  host.append(renderQuestion(q,{
+    mode:"defer",
+    picked: E.picks[q.id]||[],
+    onPick: p=>{ E.picks[q.id]=p; drawExamMeta(); }
+  }));
+  $("#exFlag").classList.toggle("on", E.flags.includes(q.id));
+  $("#exPrev").disabled = E.i===0;
+  $("#exNext").disabled = E.i===E.ids.length-1;
+  drawExamMeta();
+}
+function drawExamMeta(){
+  const E = examState;
+  const answered = E.ids.filter(id=>(E.picks[id]||[]).length).length;
+  $("#exProg").textContent = answered+" / "+E.ids.length+" 回答済";
+  const g = $("#exGrid"); g.innerHTML="";
+  E.ids.forEach((id,i)=>{
+    const b = el("button","gn", i+1);
+    if((E.picks[id]||[]).length) b.classList.add("done");
+    if(E.flags.includes(id)) b.classList.add("flag");
+    if(i===E.i) b.classList.add("cur");
+    b.onclick=()=>{ E.i=i; drawExam(); window.scrollTo(0,0); };
+    g.append(b);
+  });
+}
+$("#exPrev").onclick=()=>{ examState.i--; drawExam(); window.scrollTo(0,0); };
+$("#exNext").onclick=()=>{ examState.i++; drawExam(); window.scrollTo(0,0); };
+$("#exFlag").onclick=()=>{
+  const id = examState.ids[examState.i];
+  const i = examState.flags.indexOf(id);
+  if(i<0) examState.flags.push(id); else examState.flags.splice(i,1);
+  $("#exFlag").classList.toggle("on"); drawExamMeta();
+};
+$("#exSubmit").onclick=()=>{
+  const E = examState;
+  const un = E.ids.filter(id=>!(E.picks[id]||[]).length).length;
+  const msg = un? un+"問が未回答です。未回答は不正解になります。採点しますか。" : "採点します。よろしいですか。";
+  if(confirm(msg)) submitExam(false);
+};
+
+function submitExam(timeup){
+  const E = examState;
+  clearInterval(E.timer);
+  let ok = 0;
+  const dom = {1:[0,0],2:[0,0],3:[0,0],4:[0,0]};
+  E.ids.forEach(id=>{
+    const q = byId(id);
+    const c = isCorrect(q, E.picks[id]||[]);
+    if(c) ok++;
+    dom[q.domain][1]++; if(c) dom[q.domain][0]++;
+    record(id, c);
+  });
+  const pct = Math.round(ok/E.ids.length*100);
+  const now = new Date();
+  S.exams.push({date: now.getFullYear()+"/"+String(now.getMonth()+1).padStart(2,"0")+"/"+String(now.getDate()).padStart(2,"0"),
+    n:E.ids.length, ok, pct});
+  save();
+
+  const ids = E.ids.slice(), picks = Object.assign({}, E.picks);
+  examState = null;
+  $("#examRun").style.display="none";
+  const R = $("#examResult"); R.style.display="block"; R.innerHTML="";
+
+  if(timeup) R.append(el("div","card", '<div class="eb" style="color:var(--ng)">時間切れです。未回答は不正解として採点しました。</div>'));
+
+  const sc = el("div","card score");
+  sc.innerHTML = '<div class="pct mono" style="color:'+(pct>=70?"var(--ok)":"var(--ng)")+'">'+pct+'<span style="font-size:26px">%</span></div>'
+    + '<div class="lbl">'+ok+' / '+ids.length+' 問 正解</div>'
+    + '<div class="judge '+(pct>=70?"pass":"fail")+'">'+(pct>=70?"合格圏":"あと一歩")+'</div>';
+  R.append(sc);
+  R.append(el("p","note","本試験は100〜1000の換算スコアで700が合格ラインです。ここでの正答率はあくまで目安として扱ってください。"));
+
+  R.append(el("h2","sec","分野別の正答率"));
+  const dc = el("div","card");
+  [1,2,3,4].forEach(d=>{
+    const [o,t] = dom[d];
+    dc.append(domainBar(d, o, t));
+  });
+  R.append(dc);
+
+  R.append(el("h2","sec","全問の見直し"));
+  ids.forEach((id,i)=>{
+    const q = byId(id);
+    const card = renderQuestion(q, {mode:"readonly", picked: picks[id]||[]});
+    const n = el("div","qmeta");
+    card.prepend(el("div","eh","第 "+(i+1)+" 問"));
+    R.append(card);
+  });
+  const back = el("button","btn ghost","模試のトップに戻る");
+  back.onclick = ()=>{ $("#examResult").style.display="none"; $("#examSetup").style.display="block"; drawExamSetup(); window.scrollTo(0,0); };
+  R.append(back);
+
+  updateBadge(); updateHeader();
+  window.scrollTo(0,0);
+}
+
+function domainBar(d, o, t){
+  const pct = t? Math.round(o/t*100):0;
+  const w = el("div","dbar");
+  w.innerHTML = '<div class="top"><span class="nm">'+DOMAINS[d].short+'</span><span class="v mono">'+o+'/'+t+' ・ '+pct+'%</span></div>'
+    + '<div class="track"><i style="width:'+pct+'%;background:'+(pct>=70?DOMAINS[d].c:"var(--ng)")+'"></i></div>';
+  return w;
+}
+
+/* ============================================================
+   復習
+   ============================================================ */
+let revTab = "weak";
+let rq = null;
+function drawReview(){
+  const tabs = $("#revTabs"); tabs.innerHTML="";
+  [["weak","間違えた問題 ("+weakIds().length+")"],["mark","ブックマーク ("+S.marks.length+")"]].forEach(([v,l])=>{
+    const b = el("button","chip"+(revTab===v?" on":""), l);
+    b.onclick=()=>{revTab=v; rq=null; drawReview();};
+    tabs.append(b);
+  });
+  const body = $("#revBody"); body.innerHTML="";
+  const ids = revTab==="weak" ? weakIds() : S.marks.filter(id=>byId(id));
+
+  if(rq){ drawRQ(); return; }
+
+  if(!ids.length){
+    body.append(el("div","empty",
+      revTab==="weak"
+        ? '<div class="big">◎</div>間違えた問題はありません。<br>演習で取りこぼした問題がここに溜まります。<br><span style="font-size:12px">2回続けて正解するとリストから外れます。</span>'
+        : '<div class="big">★</div>ブックマークはまだありません。<br>問題右上の★で、後で見返したい問題を登録できます。'
+    ));
+    return;
+  }
+  const c = el("div","card");
+  ids.slice(0,50).forEach(id=>{
+    const q = byId(id);
+    const r = el("div","kv");
+    const s = S.rec[id];
+    r.innerHTML = '<span class="k" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:10px;">'
+      + '<b class="mono" style="color:'+DOMAINS[q.domain].c+'">D'+q.domain+'</b> '+esc(q.topic)+'</span>'
+      + '<span class="v mono" style="color:var(--muted);font-size:12px">'+(s? s.ok+"/"+s.seen : "未")+'</span>';
+    c.append(r);
+  });
+  body.append(c);
+  const b = el("button","btn", ids.length+"問を通しで解く");
+  b.onclick = ()=>{ rq={ids:shuffle(ids), i:0, ok:0}; drawReview(); };
+  body.append(b);
+}
+function drawRQ(){
+  const body = $("#revBody"); body.innerHTML="";
+  if(rq.i >= rq.ids.length){
+    const pct = Math.round(rq.ok/rq.ids.length*100);
+    const c = el("div","card score");
+    c.innerHTML = '<div class="pct mono" style="color:'+(pct>=70?"var(--ok)":"var(--accent)")+'">'+pct+'<span style="font-size:24px">%</span></div>'
+      + '<div class="lbl">'+rq.ok+' / '+rq.ids.length+' 問 正解</div>';
+    body.append(c);
+    const b = el("button","btn ghost","復習リストに戻る");
+    b.onclick=()=>{rq=null; drawReview();};
+    body.append(b);
+    return;
+  }
+  const p = el("div","prog");
+  p.innerHTML = '<span class="n mono">'+(rq.i+1)+' / '+rq.ids.length+'</span><span class="bar"><i style="width:'+(rq.i/rq.ids.length*100)+'%"></i></span>';
+  const quit = el("button","flagbtn","終了");
+  quit.onclick=()=>{rq=null; drawReview();};
+  p.append(quit);
+  body.append(p);
+
+  const q = byId(rq.ids[rq.i]);
+  body.append(renderQuestion(q,{mode:"instant", onDone:ok=>{
+    if(ok) rq.ok++;
+    const nx = el("button","btn","次へ");
+    nx.onclick=()=>{ rq.i++; drawRQ(); window.scrollTo(0,0); };
+    body.append(nx);
+    nx.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }}));
+}
+
+/* ============================================================
+   統計
+   ============================================================ */
+function drawStats(){
+  const seen = QUESTIONS.filter(q=>S.rec[q.id]).length;
+  const mastered = QUESTIONS.filter(q=>(S.rec[q.id]?.ok||0)>0).length;
+  let totalSeen=0, totalOk=0;
+  Object.values(S.rec).forEach(r=>{ totalSeen+=r.seen; totalOk+=r.ok; });
+  const acc = totalSeen? Math.round(totalOk/totalSeen*100):0;
+
+  $("#statOverview").innerHTML =
+    '<div class="kv"><span class="k">解いた問題</span><span class="v mono">'+seen+' / '+QUESTIONS.length+'</span></div>'
+    + '<div class="kv"><span class="k">一度は正解した問題</span><span class="v mono">'+mastered+' / '+QUESTIONS.length+'</span></div>'
+    + '<div class="kv"><span class="k">累計の回答数</span><span class="v mono">'+totalSeen+' 回</span></div>'
+    + '<div class="kv"><span class="k">通算正答率</span><span class="v mono" style="color:'+(acc>=70?"var(--ok)":"var(--accent)")+'">'+acc+'%</span></div>'
+    + '<div class="kv"><span class="k">取りこぼし中</span><span class="v mono">'+weakIds().length+' 問</span></div>';
+
+  const dd = $("#statDomains"); dd.innerHTML="";
+  const rates = {};
+  [1,2,3,4].forEach(d=>{
+    let s=0,o=0;
+    inDomain(d).forEach(q=>{ const r=S.rec[q.id]; if(r){ s+=r.seen; o+=r.ok; } });
+    rates[d] = s? Math.round(o/s*100) : null;
+    const w = el("div","dbar");
+    const pct = rates[d]===null?0:rates[d];
+    w.innerHTML = '<div class="top"><span class="nm">'+DOMAINS[d].short+' <span style="color:var(--muted);font-weight:400">('+DOMAINS[d].w+'%)</span></span>'
+      + '<span class="v mono">'+(rates[d]===null?"未回答":rates[d]+"%")+'</span></div>'
+      + '<div class="track"><i style="width:'+pct+'%;background:'+(pct>=70?DOMAINS[d].c:"var(--ng)")+'"></i></div>';
+    dd.append(w);
+  });
+
+  // 合格予測
+  const v = $("#statVerdict");
+  const answered = [1,2,3,4].filter(d=>rates[d]!==null);
+  if(seen < QUESTIONS.length*0.5){
+    v.innerHTML = '<div class="eb">まだ判定できません。全問題の半分以上を解くと予測が表示されます。<br><span style="color:var(--muted);font-size:13px">現在 '+seen+' / '+QUESTIONS.length+' 問</span></div>';
+  }else{
+    const weighted = [1,2,3,4].reduce((s,d)=> s + (rates[d]||0)*DOMAINS[d].w/100, 0);
+    const est = Math.round(weighted);
+    const weakest = [1,2,3,4].filter(d=>rates[d]!==null).sort((a,b)=>rates[a]-rates[b])[0];
+    const judge = est>=75 ? ["合格圏","var(--ok)"] : est>=65 ? ["境界線","var(--accent)"] : ["要対策","var(--ng)"];
+    v.innerHTML = '<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">'
+      + '<span class="mono" style="font-size:34px;font-weight:800;color:'+judge[1]+'">'+est+'%</span>'
+      + '<span style="font-weight:800;color:'+judge[1]+'">'+judge[0]+'</span></div>'
+      + '<div class="eb">配点比率で重み付けした推定正答率です。'
+      + (weakest ? '最も弱いのは <b>'+DOMAINS[weakest].short+'</b>('+rates[weakest]+'%)。配点 '+DOMAINS[weakest].w+'% を占めるため、ここを底上げすると効率よく伸びます。' : '')
+      + '</div>';
+  }
+}
+
+function applyImportedState(o){
+  if(!o || !o.rec) throw new Error("invalid state");
+  S = Object.assign(defaults(), o); save();
+  drawStats(); drawHome(); updateBadge(); updateHeader();
+}
+
+$("#btnExport").onclick = ()=>{
+  $("#ioBox").value = JSON.stringify(S);
+  $("#ioBox").select();
+};
+$("#btnImport").onclick = ()=>{
+  const t = $("#ioBox").value.trim();
+  if(!t){ alert("読み込むデータを貼り付けてください。"); return; }
+  try{
+    applyImportedState(JSON.parse(t));
+    alert("学習データを読み込みました。");
+  }catch(e){ alert("データの形式が正しくありません。書き出した文字列をそのまま貼り付けてください。"); }
+};
+$("#btnExportFile").onclick = ()=>{
+  const blob = new Blob([JSON.stringify(S, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "aws-clf-quiz-progress.json";
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+};
+$("#btnImportFile").onclick = ()=>{ $("#fileImportInput").click(); };
+$("#fileImportInput").onchange = (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      applyImportedState(JSON.parse(reader.result));
+      alert("学習データを読み込みました。");
+    }catch(err){ alert("ファイルの形式が正しくありません。書き出したファイルをそのまま選択してください。"); }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+};
+$("#btnReset").onclick = ()=>{
+  if(!confirm("すべての回答履歴、ブックマーク、模試結果を消します。元に戻せません。")) return;
+  S = defaults(); save();
+  drawStats(); drawHome(); updateBadge(); updateHeader();
+  alert("学習データを消去しました。");
+};
+
+/* ============================================================
+   暗記（サービス名×語源リファレンス）
+   n:名前 / h:頻出度1-3 / f:何をするか / e:名前の由来
+   ============================================================ */
+const MEMO = [
+{c:"コンピューティング",tip:"自由度で覚える: OSごと管理=Virtual Machines ／ 同一VMを大量複製=Scale Sets ／ Webアプリを楽に=App Service ／ イベントで一瞬動く=Functions",items:[
+{n:"Virtual Machines",h:3,f:"クラウド上の仮想サーバー(IaaS)。OSから自分で管理する自由度最大のコンピューティング",e:"仮想の(Virtual)機械(Machine)。物理サーバーを仮想化してクラウドに置いたもの"},
+{n:"Virtual Machine Scale Sets",h:2,f:"同一構成のVMを負荷に応じて自動で増減(オートスケール)する仕組み",e:"仮想マシンを大量(Scale)にセットで扱う。需要に合わせて台数を伸縮させる"},
+{n:"App Service",h:3,f:"WebアプリやAPIをOS管理不要で公開できるPaaS。デプロイ・スケールが容易",e:"アプリを動かすためのサービス。基盤の面倒を見なくてよい"},
+{n:"Functions",h:3,f:"イベント駆動のサーバーレス関数。実行された分だけ課金・インフラ管理不要",e:"プログラムの「関数(Function)」をそのままクラウドで実行する発想"},
+{n:"Container Instances",h:2,f:"単発・少数のコンテナを手早く起動するサーバーレスコンテナ(ACI)",e:"コンテナ1個(Instance)をすぐ動かす。オーケストレーション不要の手軽さ"},
+{n:"Azure Kubernetes Service",h:3,f:"多数のコンテナを自動デプロイ・スケール・自己修復するマネージドKubernetes(AKS)",e:"Kubernetes(ギリシャ語で操舵手)をAzureが管理してくれる。大規模コンテナ運用の定番"}]},
+{c:"ネットワーク",tip:"自分の網=Virtual Network ／ 安いトンネル=VPN Gateway ／ 専用線=ExpressRoute ／ 負荷分散=Load Balancer",items:[
+{n:"Virtual Network",h:3,f:"Azure上の自分専用の仮想ネットワーク(VNet)。サブネット等を自分で設計",e:"仮想の(Virtual)ネットワーク。クラウド内に自分専用のLANを引くイメージ"},
+{n:"VPN Gateway",h:2,f:"インターネット経由の暗号化トンネルでオンプレとAzureを接続(安価)",e:"仮想の専用線(VPN)の出入口(Gateway)。公衆網を暗号化して安全に通す"},
+{n:"Azure ExpressRoute",h:3,f:"インターネットを経由しない専用線接続。高帯域・低遅延・高セキュリティ(高価)",e:"急行(Express)の専用ルート(Route)。公衆網を通らない特別な道"},
+{n:"Load Balancer",h:2,f:"受信トラフィックを複数のサーバーへ分散し、可用性と性能を高める",e:"負荷(Load)を均衡(Balance)させる。1台に集中させない"}]},
+{c:"ストレージ",tip:"非構造化データの大量保管=Blob ／ SMBのファイル共有=Files ／ メッセージの一時保管=Queue ／ 冗長性は LRS<ZRS<GRS の順に広範囲",items:[
+{n:"Blob Storage",h:3,f:"画像・動画・バックアップ等の非構造化データを安価に大量保存するオブジェクトストレージ",e:"塊(Blob=Binary Large Object)をそのまま保管。ホット/クール/アーカイブの層を選べる"},
+{n:"Azure Files",h:2,f:"SMB/NFSでマウントできるマネージドなファイル共有",e:"ファイル共有をそのままクラウドで提供する"},
+{n:"Queue Storage",h:1,f:"アプリ間でやり取りするメッセージを一時的に保管するキュー",e:"待ち行列(Queue)。処理する前のメッセージを順番に貯めておく"},
+{n:"Disk Storage",h:2,f:"仮想マシンにアタッチするブロックストレージ(管理ディスク)",e:"VM用の外付けディスク。OSやデータの保存先"}]},
+{c:"データベース",tip:"従来型リレーショナル=Azure SQL Database ／ グローバル分散NoSQL=Cosmos DB ／ 高速キャッシュ=Cache for Redis",items:[
+{n:"Azure SQL Database",h:3,f:"マネージドなリレーショナルDB(PaaS)。パッチ・バックアップ・冗長化を自動",e:"SQL Serverをクラウドのサービスとして提供。運用の手間を肩代わり"},
+{n:"Azure Cosmos DB",h:3,f:"グローバル分散のマルチモデルNoSQL。1桁ミリ秒の低遅延を保証",e:"宇宙(Cosmos)規模に広がるDB。世界中に分散配置できる"},
+{n:"Azure Cache for Redis",h:1,f:"インメモリのキャッシュでDBの読み取り負荷を減らし高速化",e:"よく使うデータをメモリに載せて(Cache)高速応答する"}]},
+{c:"ID・セキュリティ",tip:"クラウドのID基盤=Entra ID ／ 権限割り当て=RBAC ／ 本人確認強化=MFA ／ 統合脅威対策=Defender for Cloud",items:[
+{n:"Entra ID",h:3,f:"クラウドのID・アクセス管理基盤(旧Azure AD)。認証・SSO・MFAの中心",e:"入口(Entra≒Enter)となるID基盤。誰がサインインできるかを司る"},
+{n:"Multi-Factor Authentication",h:3,f:"パスワードに加え別の要素(スマホ・生体)で本人確認を強化(MFA)",e:"複数(Multi)の要素(Factor)で認証。1つ漏れても突破されにくい"},
+{n:"Microsoft Defender for Cloud",h:2,f:"クラウド全体のセキュリティ態勢を可視化し、脅威検出と推奨事項を提供",e:"クラウドを守る防衛者(Defender)。弱点と攻撃を見張る"},
+{n:"Conditional Access",h:2,f:"場所・デバイス・リスクなどの条件に応じてアクセス可否やMFA要求を制御",e:"条件(Conditional)次第でアクセス(Access)を許可・追加認証する"}]},
+{c:"管理・ガバナンス",tip:"構成ルールの強制=Azure Policy ／ 権限の割り当て=RBAC ／ 誤操作防止=リソースロック ／ ハイブリッド管理=Azure Arc",items:[
+{n:"Azure Policy",h:3,f:"リソースが組織ルールに準拠しているか評価し、非準拠をブロック・是正",e:"組織の方針(Policy)をリソースに強制する。タグ必須や許可リージョン制限など"},
+{n:"RBAC",h:3,f:"ロール(閲覧者/共同作成者/所有者等)を割り当て、誰が何をできるか制御",e:"役割(Role)に基づく(Based)アクセス制御(Access Control)"},
+{n:"Azure Arc",h:1,f:"オンプレや他クラウドのサーバー・DBもAzureの管理下に統合",e:"Azureの管理の傘を弧(Arc)のように外部リソースまで広げる"},
+{n:"Azure Monitor",h:2,f:"リソースのメトリック・ログを収集し、可視化・アラート・分析を行う",e:"Azure全体を監視(Monitor)する目。稼働状況とログを一元的に見る"},
+{n:"Service Health",h:2,f:"自分の環境に影響する障害・計画メンテ・正常性情報を個別に通知",e:"利用中サービスの健康状態(Health)を教えてくれる"}]},
+{c:"コスト管理・ツール",tip:"移行の削減見積り=TCO計算ツール ／ これから使う構成の試算=価格計算ツール ／ 実績分析と予算=Cost Management ／ 推奨事項=Advisor",items:[
+{n:"TCO計算ツール",h:2,f:"オンプレをAzureへ移行した場合のコスト削減を見積もる(移行前の判断)",e:"総保有コスト(Total Cost of Ownership)を比較する"},
+{n:"価格計算ツール",h:2,f:"これから使うAzureサービス構成の月額料金を事前に試算",e:"使う予定の構成の価格(Pricing)を計算する"},
+{n:"Microsoft Cost Management",h:2,f:"実際の利用コストを分析・可視化し、予算とアラートを設定",e:"発生したコスト(Cost)を管理(Management)する"},
+{n:"Azure Advisor",h:2,f:"コスト・セキュリティ・信頼性・性能の観点で改善推奨を提示",e:"助言者(Advisor)。ベストプラクティスからの逸脱を教えてくれる"},
+{n:"Azure Cloud Shell",h:1,f:"ブラウザで使える認証済み対話型シェル(Bash/PowerShell)",e:"クラウド上の貝殻(Shell=シェル)。手元に何も入れずコマンド操作できる"}]}
+];
+
+const MEMO_ALL = MEMO.flatMap(c=>c.items);
+const MEMO_ALIAS = {
+  "azure ad":"Entra ID", "microsoft entra id":"Entra ID", "azure active directory":"Entra ID",
+  "mfa":"Multi-Factor Authentication", "aks":"Azure Kubernetes Service",
+  "aci":"Container Instances", "vnet":"Virtual Network", "vm":"Virtual Machines",
+  "cost management":"Microsoft Cost Management", "advisor":"Azure Advisor",
+  "policy":"Azure Policy", "cloud shell":"Azure Cloud Shell"
+};
+function findEtym(tag){
+  const t = tag.replace(/^(Amazon|AWS|Azure|Microsoft)\s+/i,"").toLowerCase();
+  if(MEMO_ALIAS[t]){
+    const hit = MEMO_ALL.find(it=>it.n===MEMO_ALIAS[t]);
+    if(hit) return hit;
+  }
+  let best = null;
+  MEMO_ALL.forEach(it=>{
+    const k = it.n.toLowerCase();
+    if(t===k){ best = it; return; }
+    if(!best || (best.n.toLowerCase()!==t)){
+      if((t.includes(k) || k.includes(t)) && (!best || k.length > best.n.length)) best = it;
+    }
+  });
+  return best;
+}
+
+// 暗記カード→関連問題の逆引き索引（サービス名 -> 出題IDのSet）。
+// 解説の「名前の由来で覚える」と同じfindEtym()経由で作るので両者は必ず一致する。
+const MEMO_QIDS = {};
+QUESTIONS.forEach(q=>{
+  (q.explanation.svc||[]).forEach(tag=>{
+    const it = findEtym(tag);
+    if(!it) return;
+    (MEMO_QIDS[it.n] || (MEMO_QIDS[it.n] = new Set())).add(q.id);
+  });
+});
+
+// Trusted Advisorの6分野やWell-Architectedの6本柱のように、
+// 「セットで覚えるべき一覧」をサービス単位の暗記カードとは別枠でまとめる。
+const MEMO_FRAMEWORKS = [
+{title:"クラウドサービスモデル — 管理範囲の違い",
+ note:"「OS・ミドルウェアを誰が管理するか」で切り分ける。要件に出てくるキーワードで判定する。",
+ items:[
+  {n:"IaaS", d:"仮想マシン等のインフラを借りる。OS・ミドルウェア・アプリは利用者が管理。自由度最大・リフト&シフト向き(例: Virtual Machines)。"},
+  {n:"PaaS", d:"アプリ開発・実行の土台を借りる。OS以下は事業者が管理し、利用者はコードとデータに集中(例: App Service)。"},
+  {n:"SaaS", d:"完成したアプリを使うだけ。ほぼすべてを事業者が管理(例: Microsoft 365)。利用者の管理範囲が最小。"}
+ ]},
+{title:"クラウド展開モデル",
+ note:"「どこに置くか/何と組み合わせるか」で区別する。ハイブリッドとマルチクラウドの混同に注意。",
+ items:[
+  {n:"パブリック", d:"Azure等の共有基盤を利用。初期投資不要・従量課金・スケールしやすい。"},
+  {n:"プライベート", d:"自社専用環境。制御・コンプライアンス要件が厳しい場合に選ぶ。"},
+  {n:"ハイブリッド", d:"オンプレミス+パブリッククラウドの組み合わせ。既存資産を活かしつつ拡張。"},
+  {n:"マルチクラウド", d:"複数のクラウド事業者(例: Azure と AWS)を併用。ベンダーロックイン回避など。"}
+ ]},
+{title:"クラウドの主な利点(ベネフィット)",
+ note:"選択肢が複数の「利点っぽい言葉」に分かれている問題は、どの利点の話かをまず切り分ける。",
+ items:[
+  {n:"高可用性", d:"障害時もサービスを継続できる(SLAで保証)。"},
+  {n:"スケーラビリティ", d:"リソースを増減できる(垂直=性能UP / 水平=台数UP)。"},
+  {n:"弾力性", d:"需要に応じて自動で増減し、不要なら減らして節約する。"},
+  {n:"俊敏性(アジリティ)", d:"必要なリソースを即座に用意でき、すぐ試せる。"},
+  {n:"ディザスターリカバリー", d:"災害・障害からデータやシステムを復旧できる。"},
+  {n:"予測可能性", d:"性能もコストも見通しを立てやすい(容量計画・従量課金)。"}
+ ]},
+{title:"多層防御(Defense in Depth)の層",
+ note:"セキュリティは1つの対策に頼らず層で守る。外側の物理から内側のデータへ向かう順で覚える。",
+ items:[
+  {n:"物理セキュリティ", d:"データセンターへの物理アクセス制御(Microsoftの責任)。"},
+  {n:"ID・アクセス", d:"認証・MFA・条件付きアクセスで本人と権限を管理。"},
+  {n:"境界", d:"DDoS対策やファイアウォールで大規模攻撃を遮断。"},
+  {n:"ネットワーク", d:"サブネット分離・アクセス制限で通信を絞る。"},
+  {n:"コンピューティング", d:"VMやエンドポイントの保護・パッチ適用。"},
+  {n:"アプリケーション", d:"安全な開発と脆弱性対策。"},
+  {n:"データ", d:"暗号化とアクセス制御で最内層の情報を守る。"}
+ ]}
+];
+function drawMemoFrameworks(){
+  const host = $("#memoFwBody"); if(!host) return;
+  host.innerHTML = "";
+  MEMO_FRAMEWORKS.forEach(fw=>{
+    const c = el("div","fwcard");
+    c.append(el("h4","",esc(fw.title)));
+    if(fw.note) c.append(el("div","fwnote","💡 "+esc(fw.note)));
+    fw.items.forEach(it=>{
+      c.append(el("div","fwitem","<b>"+esc(it.n)+"</b> — "+esc(it.d)));
+    });
+    host.append(c);
+  });
+}
+
+let memoFlt = {cat:"all", mode:"all", kw:""};
+function drawMemo(){
+  drawMemoFrameworks();
+  const total = MEMO_ALL.length;
+  const done = MEMO_ALL.filter(i=>S.memo && S.memo[i.n]).length;
+  $("#memoStat").textContent = "覚えた " + done + " / " + total;
+  $("#memoBar").style.width = (total? Math.round(done/total*100):0) + "%";
+
+  const mm = $("#memoMode"); mm.innerHTML="";
+  [["all","すべて"],["hot","⭐⭐⭐頻出のみ"],["todo","未修得のみ"]].forEach(([v,l])=>{
+    const b = el("button","chip"+(memoFlt.mode===v?" on":""), l);
+    b.onclick=()=>{ memoFlt.mode=v; drawMemo(); };
+    mm.append(b);
+  });
+  const mc = $("#memoCats"); mc.innerHTML="";
+  const catBtn = (v,l)=>{ const b=el("button","chip"+(memoFlt.cat===v?" on":""),l); b.onclick=()=>{memoFlt.cat=v; drawMemo();}; mc.append(b); };
+  catBtn("all","全カテゴリ");
+  MEMO.forEach(c=>catBtn(c.c, c.c));
+
+  const kw = memoFlt.kw.trim().toLowerCase();
+  const body = $("#memoBody"); body.innerHTML="";
+  let shown = 0;
+  MEMO.forEach(c=>{
+    if(memoFlt.cat!=="all" && memoFlt.cat!==c.c) return;
+    const items = c.items.filter(it=>{
+      if(memoFlt.mode==="hot" && it.h<3) return false;
+      if(memoFlt.mode==="todo" && S.memo && S.memo[it.n]) return false;
+      if(kw && !(it.n+" "+it.f+" "+it.e).toLowerCase().includes(kw)) return false;
+      return true;
+    });
+    if(!items.length) return;
+    const doneN = c.items.filter(it=>S.memo && S.memo[it.n]).length;
+    const head = el("div","cathead");
+    head.append(el("h3","",esc(c.c)));
+    head.append(el("span","cnt mono", doneN+"/"+c.items.length));
+    body.append(head);
+    if(!kw && memoFlt.mode==="all") body.append(el("div","cattip","💡 " + esc(c.tip)));
+    items.forEach(it=>{
+      shown++;
+      const got = !!(S.memo && S.memo[it.n]);
+      const card = el("div","memocard"+(got?" done":""));
+      const top = el("div","top");
+      top.append(el("span","nm", esc(it.n)));
+      top.append(el("span","hot", "⭐".repeat(it.h)));
+      const gb = el("button","gotit"+(got?" on":""), got?"✓ 覚えた":"覚えた?");
+      gb.onclick = ()=>{
+        if(!S.memo) S.memo = {};
+        if(S.memo[it.n]) delete S.memo[it.n]; else S.memo[it.n] = true;
+        save(); drawMemo();
+      };
+      top.append(gb);
+      card.append(top);
+      card.append(el("div","fn", esc(it.f)));
+      card.append(el("div","ety", "🏷 " + esc(it.e)));
+      const qids = MEMO_QIDS[it.n] ? [...MEMO_QIDS[it.n]] : [];
+      if(qids.length){
+        const pb = el("button","relq", "✎ 関連問題を解く（"+qids.length+"問）");
+        pb.onclick = ()=>{ startPractice(shuffle(qids.slice()), true, "memo"); go("practice"); };
+        card.append(pb);
+      }
+      body.append(card);
+    });
+  });
+  if(!shown) body.append(el("div","empty",'<div class="big">◇</div>条件に合うサービスがありません。<br>フィルタや検索語を変えてみてください。'));
+}
+$("#memoKw").oninput = e=>{ memoFlt.kw = e.target.value; drawMemo(); };
+
+/* ============================================================
+   クラウド同期 (Firebase: Googleログイン + Firestore自動保存)
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID"
+};
+const CLOUD_ENABLED = !!(window.firebase && !/^PASTE_/.test(FIREBASE_CONFIG.apiKey));
+
+let fbUser = null, fbDb = null, syncTimer = null, lastSyncAt = null, syncState = "idle";
+
+function setSync(st){ syncState = st; updateSyncUI(); }
+
+function scheduleCloudSave(){
+  if(!fbUser || !fbDb) return;
+  clearTimeout(syncTimer);
+  setSync("pending");
+  syncTimer = setTimeout(pushCloud, 1500);
+}
+
+async function pushCloud(){
+  if(!fbUser || !fbDb) return;
+  clearTimeout(syncTimer); syncTimer = null;
+  try{
+    setSync("saving");
+    await fbDb.collection("users").doc(fbUser.uid).set({
+      data: JSON.stringify(S),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    lastSyncAt = new Date();
+    setSync("ok");
+  }catch(e){ setSync("err"); }
+}
+
+/* 端末間でズレた履歴の統合: 問題ごとに回答回数の多い記録を採用、
+   ブックマークは和集合、模試結果は重複排除して結合 */
+function mergeStates(a, b){
+  const out = defaults();
+  new Set([...Object.keys(a.rec||{}), ...Object.keys(b.rec||{})]).forEach(id=>{
+    const x = (a.rec||{})[id], y = (b.rec||{})[id];
+    out.rec[id] = (x && y) ? ((y.seen||0) > (x.seen||0) ? y : x) : (x || y);
+  });
+  out.marks = [...new Set([...(a.marks||[]), ...(b.marks||[])])];
+  out.memo = Object.assign({}, a.memo||{}, b.memo||{});
+  const dedup = new Set();
+  out.exams = [...(a.exams||[]), ...(b.exams||[])].filter(e=>{
+    const k = e.date+"|"+e.n+"|"+e.ok+"|"+e.pct;
+    if(dedup.has(k)) return false; dedup.add(k); return true;
+  }).sort((x,y)=> x.date<y.date ? -1 : 1);
+  return out;
+}
+
+async function pullCloud(){
+  if(!fbUser || !fbDb) return;
+  try{
+    setSync("saving");
+    const snap = await fbDb.collection("users").doc(fbUser.uid).get();
+    if(snap.exists && snap.data().data){
+      const remote = Object.assign(defaults(), JSON.parse(snap.data().data));
+      S = mergeStates(remote, S);
+      try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+    }
+    await pushCloud();
+    drawHome(); drawStats(); updateBadge(); updateHeader();
+  }catch(e){ setSync("err"); }
+}
+
+async function cloudLogin(){
+  if(!CLOUD_ENABLED) return;
+  const provider = new firebase.auth.GoogleAuthProvider();
+  // ポップアップは新しいタブとして開くことが多く、気づかれず「反応がない」ように
+  // 見えることがあるため、待機中はボタン表示で分かるようにする
+  const btns = ["homeLoginBtn","statsLoginBtn"].map(id=>$("#"+id)).filter(Boolean);
+  const orig = btns.map(b=>b.textContent);
+  btns.forEach(b=>{ b.disabled = true; b.textContent = "ログイン中…(別タブを確認してください)"; });
+  try{
+    await firebase.auth().signInWithPopup(provider);
+  }catch(e){
+    // signInWithRedirectはgithub.io上ではSafariのストレージ分離で壊れる
+    // (missing initial state)ため、フォールバックには使わない
+    if(e && (e.code==="auth/popup-blocked" || e.code==="auth/operation-not-supported-in-this-environment")){
+      alert("ポップアップがブロックされてログイン画面を開けませんでした。\n\niPhoneの場合: 設定 > アプリ > Safari > 「ポップアップブロック」をオフにしてから、もう一度お試しください。");
+    }else if(e && e.code!=="auth/popup-closed-by-user" && e.code!=="auth/cancelled-popup-request"){
+      alert("ログインに失敗しました: " + (e.code || e.message));
+    }
+  }finally{
+    btns.forEach((b,i)=>{ b.disabled = false; b.textContent = orig[i]; });
+  }
+}
+
+function cloudLogout(){
+  if(!confirm("ログアウトします。この端末に保存された履歴はそのまま残ります。")) return;
+  firebase.auth().signOut();
+}
+
+function fmtSyncTime(d){
+  return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+}
+
+function updateSyncUI(){
+  const pill = $("#syncPill");
+  if(pill){
+    if(!CLOUD_ENABLED){ pill.style.display = "none"; }
+    else{
+      pill.style.display = "";
+      pill.onclick = ()=>go("stats");
+      if(!fbUser){ pill.className="syncpill"; pill.textContent="未ログイン"; }
+      else if(syncState==="err"){ pill.className="syncpill err"; pill.textContent="同期エラー"; }
+      else if(syncState==="pending" || syncState==="saving"){ pill.className="syncpill pending"; pill.textContent="同期中…"; }
+      else{ pill.className="syncpill on"; pill.textContent="☁ 同期済み"; }
+    }
+  }
+  const hc = $("#homeSyncCard");
+  if(hc){
+    if(CLOUD_ENABLED && !fbUser){
+      hc.innerHTML = '<h2 class="sec">クラウド同期</h2><div class="card">'
+        + '<div class="eb" style="margin-bottom:4px;">Googleでログインすると、学習履歴がクラウドに自動保存され、どの端末・ブラウザからでも続きから再開できます。</div>'
+        + '<button class="btn" id="homeLoginBtn">Googleでログイン</button></div>';
+      $("#homeLoginBtn").onclick = cloudLogin;
+    }else{
+      hc.innerHTML = "";
+    }
+  }
+  const sc = $("#syncSection");
+  if(sc){
+    if(!CLOUD_ENABLED){
+      sc.innerHTML = "";
+    }else if(!fbUser){
+      sc.innerHTML = '<h2 class="sec">クラウド同期</h2><div class="card">'
+        + '<p class="note" style="margin-top:0;">Googleでログインすると、履歴が自動でクラウドに保存されます。</p>'
+        + '<button class="btn" id="statsLoginBtn">Googleでログイン</button></div>';
+      $("#statsLoginBtn").onclick = cloudLogin;
+    }else{
+      const stLabel = syncState==="err" ? '<span style="color:var(--ng)">エラー(電波状況を確認してください)</span>'
+        : (syncState==="pending"||syncState==="saving") ? '<span style="color:var(--accent)">同期中…</span>'
+        : '<span style="color:var(--ok)">同期済み</span>';
+      sc.innerHTML = '<h2 class="sec">クラウド同期</h2><div class="card">'
+        + '<div class="kv"><span class="k">アカウント</span><span class="v" style="font-size:13px;font-weight:600;">'+esc(fbUser.email||"Google")+'</span></div>'
+        + '<div class="kv"><span class="k">状態</span><span class="v">'+stLabel+'</span></div>'
+        + (lastSyncAt ? '<div class="kv"><span class="k">最終同期</span><span class="v mono">'+fmtSyncTime(lastSyncAt)+'</span></div>' : '')
+        + '<button class="btn ghost" id="syncNowBtn">今すぐ同期</button>'
+        + '<button class="btn danger" id="logoutBtn" style="margin-top:8px;">ログアウト</button></div>';
+      $("#syncNowBtn").onclick = pullCloud;
+      $("#logoutBtn").onclick = cloudLogout;
+    }
+  }
+}
+
+if(CLOUD_ENABLED){
+  firebase.initializeApp(FIREBASE_CONFIG);
+  fbDb = firebase.firestore();
+  fbDb.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+  // 過去のリダイレクト試行の残骸(missing initial state等)を静かに破棄する
+  firebase.auth().getRedirectResult().catch(()=>{});
+  firebase.auth().onAuthStateChanged(u=>{
+    fbUser = u;
+    if(u) pullCloud(); else setSync("idle");
+    updateSyncUI();
+  });
+  // タブを閉じる/切り替える直前に、保存待ちの変更を即時送信
+  const flushPending = ()=>{ if(syncTimer) pushCloud(); };
+  document.addEventListener("visibilitychange", ()=>{ if(document.visibilityState==="hidden") flushPending(); });
+  window.addEventListener("pagehide", flushPending);
+}
+
+/* ============================================================
+   起動
+   ============================================================ */
+drawFilters();
+drawHome();
+updateBadge();
+updateHeader();
+updateSyncUI();
+</script>
+</body>
+</html>
