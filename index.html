@@ -1651,7 +1651,7 @@ function renderQuestion(q, opts){
   card.append(meta);
 
   card.append(el("p","qtext", esc(q.question)));
-  if(q.type==="multi") card.append(el("div","qhint","2つ選択してください"));
+  if(q.type==="multi") card.append(el("div","qhint",q.answer.length+"つ選択してください"));
 
   // 選択肢(表示順をシャッフルし、元indexへのマップを保持)
   const order = opts.order || shuffle(q.choices.map((_,i)=>i));
@@ -1671,11 +1671,11 @@ function renderQuestion(q, opts){
       }else{
         const i=picked.indexOf(orig);
         if(i>=0) picked.splice(i,1);
-        else if(picked.length<2) picked.push(orig);
+        else if(picked.length<q.answer.length) picked.push(orig);
       }
       btns.forEach(x=>x.classList.toggle("sel", picked.includes(+x.dataset.orig)));
       if(mode==="defer"){ opts.onPick && opts.onPick(picked); }
-      else { submit.disabled = (q.type==="multi" ? picked.length!==2 : picked.length!==1); }
+      else { submit.disabled = (q.type==="multi" ? picked.length!==q.answer.length : picked.length!==1); }
       if(mode==="instant" && q.type==="single"){ doSubmit(); }
     };
     btns.push(b); box.append(b);
