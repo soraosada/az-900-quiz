@@ -1843,7 +1843,7 @@ choices:["TCO計算ツール","価格計算ツール","Microsoft Cost Management
 answer:[0],
 explanation:{correct:"TCO(総所有コスト)計算ツールは、オンプレミスの機器・電力・空調・運用人件費などを含めた総コストと、Azureで運用した場合のコストを比較して提示します。",
 wrong:[null,"価格計算ツールはこれから作るAzure構成の料金を見積もるツールで、オンプレミスとの比較機能はありません。","Cost Managementは実際に発生したコストの分析・予算管理を行うツールです。","Azure Advisorはベストプラクティスの推奨事項を提示します。"],
-point:"最頻出の区別: オンプレとの「比較」=TCO計算ツール / これから作る構成の「見積り」=価格計算ツール / 実際にかかった費用の「分析」=Cost Management。",
+point:"最頻出の区別: オンプレとの「比較」=TCO計算ツール / これから作る構成の「見積り」=価格計算ツール / 実際にかかった費用の「分析」=Cost Management。※補足: TCO計算ツール単体は2025年8月末で提供終了しAzure Migrateのビジネスケース機能に統合されたが、TCOの概念と役割分担は試験で引き続き問われる。",
 svc:["TCO計算ツール"]}},
 
 {id:"D3-49",domain:3,topic:"価格計算ツール",type:"single",difficulty:2,
@@ -2068,7 +2068,7 @@ choices:["Azure Blueprints","Azure Advisor","Azure Monitor","タグ"],
 answer:[0],
 explanation:{correct:"Azure Blueprintsは、ポリシー・ロール割り当て・リソーステンプレートなどをパッケージ化し、組織の標準に準拠した環境を繰り返し展開できるようにする機能です。",
 wrong:[null,"Azure Advisorは推奨事項の提示です。","Azure Monitorは監視サービスです。","タグはラベル付け機能です。"],
-point:"「ポリシー+RBAC+テンプレートをセットで繰り返し展開」=Azure Blueprints。ARMテンプレート単体より広い範囲(ガバナンス込み)を扱う。",
+point:"「ポリシー+RBAC+テンプレートをセットで繰り返し展開」=Azure Blueprints。ARMテンプレート単体より広い範囲(ガバナンス込み)を扱う。※補足: Blueprintsはプレビューのまま廃止が決定しており(2027-01-31に完全廃止)、後継はDeployment Stacks+Template Specs。試験では引き続き出題され得るため役割は覚えるが、実務での新規採用は不可。",
 svc:[]}},
 
 {id:"D3-74",domain:3,topic:"Application Insights",type:"single",difficulty:3,
