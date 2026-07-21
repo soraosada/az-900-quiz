@@ -2675,6 +2675,8 @@ const DOMAINS = {
   2:{name:"Azureのアーキテクチャとサービス",short:"アーキテクチャ",w:37,c:"var(--d2)"},
   3:{name:"Azureの管理とガバナンス",short:"管理・ガバナンス",w:35,c:"var(--d3)"}
 };
+// 分野IDはDOMAINSから導出する(分野数を変えてもコード側の修正が不要)
+const DOM_IDS = Object.keys(DOMAINS).map(Number);
 const DIFFS = {1:"基本",2:"標準",3:"応用"};
 
 const defaults = () => ({ rec:{}, marks:[], exams:[], memo:{} });
@@ -2911,7 +2913,7 @@ function updateHeader(){
 function drawHome(){
   const wb = $("#weightbar"); wb.innerHTML="";
   const wl = $("#wlegend"); wl.innerHTML="";
-  [1,2,3,4].forEach(d=>{
+  DOM_IDS.forEach(d=>{
     const D = DOMAINS[d];
     const total = inDomain(d).length, done = masteredIn(d);
     const pct = total? Math.round(done/total*100):0;
@@ -3066,7 +3068,7 @@ const EXAM_TARGET = 50;
 function buildExamSet(){
   const n = Math.min(EXAM_TARGET, QUESTIONS.length);
   const out = [];
-  [1,2,3,4].forEach(d=>{
+  DOM_IDS.forEach(d=>{
     const want = Math.round(n * DOMAINS[d].w / 100);
     out.push(...shuffle(inDomain(d).map(q=>q.id)).slice(0, want));
   });
@@ -3194,7 +3196,7 @@ function submitExam(timeup){
 
   R.append(el("h2","sec","分野別の正答率"));
   const dc = el("div","card");
-  [1,2,3,4].forEach(d=>{
+  DOM_IDS.forEach(d=>{
     const [o,t] = dom[d];
     dc.append(domainBar(d, o, t));
   });
@@ -3313,7 +3315,7 @@ function drawStats(){
 
   const dd = $("#statDomains"); dd.innerHTML="";
   const rates = {};
-  [1,2,3,4].forEach(d=>{
+  DOM_IDS.forEach(d=>{
     let s=0,o=0;
     inDomain(d).forEach(q=>{ const r=S.rec[q.id]; if(r){ s+=r.seen; o+=r.ok; } });
     rates[d] = s? Math.round(o/s*100) : null;
@@ -3327,13 +3329,13 @@ function drawStats(){
 
   // 合格予測
   const v = $("#statVerdict");
-  const answered = [1,2,3,4].filter(d=>rates[d]!==null);
+  const answered = DOM_IDS.filter(d=>rates[d]!==null);
   if(seen < QUESTIONS.length*0.5){
     v.innerHTML = '<div class="eb">まだ判定できません。全問題の半分以上を解くと予測が表示されます。<br><span style="color:var(--muted);font-size:13px">現在 '+seen+' / '+QUESTIONS.length+' 問</span></div>';
   }else{
-    const weighted = [1,2,3,4].reduce((s,d)=> s + (rates[d]||0)*DOMAINS[d].w/100, 0);
+    const weighted = DOM_IDS.reduce((s,d)=> s + (rates[d]||0)*DOMAINS[d].w/100, 0);
     const est = Math.round(weighted);
-    const weakest = [1,2,3,4].filter(d=>rates[d]!==null).sort((a,b)=>rates[a]-rates[b])[0];
+    const weakest = DOM_IDS.filter(d=>rates[d]!==null).sort((a,b)=>rates[a]-rates[b])[0];
     const judge = est>=75 ? ["合格圏","var(--ok)"] : est>=65 ? ["境界線","var(--accent)"] : ["要対策","var(--ng)"];
     v.innerHTML = '<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;">'
       + '<span class="mono" style="font-size:34px;font-weight:800;color:'+judge[1]+'">'+est+'%</span>'
@@ -3658,8 +3660,9 @@ async function pullCloud(){
       try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
     }
     await pushCloud();
-    drawHome(); drawStats(); updateBadge(); updateHeader();
   }catch(e){ setSync("err", e); }
+  // 描画は同期の成否と切り離す(描画側の例外で「同期エラー」と誤表示しないため)
+  try{ drawHome(); drawStats(); updateBadge(); updateHeader(); }catch(e){ console.error(e); }
 }
 
 async function cloudLogin(){
