@@ -3605,7 +3605,8 @@ const CLOUD_ENABLED = !!(window.firebase && !/^PASTE_/.test(FIREBASE_CONFIG.apiK
 
 let fbUser = null, fbDb = null, syncTimer = null, lastSyncAt = null, syncState = "idle";
 
-function setSync(st){ syncState = st; updateSyncUI(); }
+let syncErr = "";
+function setSync(st, err){ syncState = st; syncErr = (st==="err" && err) ? (err.code || err.message || "") : ""; updateSyncUI(); }
 
 function scheduleCloudSave(){
   if(!fbUser || !fbDb) return;
@@ -3625,7 +3626,7 @@ async function pushCloud(){
     });
     lastSyncAt = new Date();
     setSync("ok");
-  }catch(e){ setSync("err"); }
+  }catch(e){ setSync("err", e); }
 }
 
 /* 端末間でズレた履歴の統合: 問題ごとに回答回数の多い記録を採用、
@@ -3658,7 +3659,7 @@ async function pullCloud(){
     }
     await pushCloud();
     drawHome(); drawStats(); updateBadge(); updateHeader();
-  }catch(e){ setSync("err"); }
+  }catch(e){ setSync("err", e); }
 }
 
 async function cloudLogin(){
@@ -3727,7 +3728,7 @@ function updateSyncUI(){
         + '<button class="btn" id="statsLoginBtn">Googleでログイン</button></div>';
       $("#statsLoginBtn").onclick = cloudLogin;
     }else{
-      const stLabel = syncState==="err" ? '<span style="color:var(--ng)">エラー(電波状況を確認してください)</span>'
+      const stLabel = syncState==="err" ? '<span style="color:var(--ng)">エラー'+(syncErr ? '('+esc(syncErr)+')' : '(通信状況を確認してください)')+'</span>'
         : (syncState==="pending"||syncState==="saving") ? '<span style="color:var(--accent)">同期中…</span>'
         : '<span style="color:var(--ok)">同期済み</span>';
       sc.innerHTML = '<h2 class="sec">クラウド同期</h2><div class="card">'
